@@ -1,11 +1,17 @@
 {
   "schemaVersion": 1,
   "id": "biome-snapshot",
-  "version": "1.0",
-  "name": "biome-snapshot",
-  "description": "jie_shao",
-  "authors": [],
-  "contact": {},
+  "version": "1.0.0",
+  "name": "Biome Snapshot",
+  "description": "Adds a mod to export the biome images of the specified area.",
+  "authors": [
+    "廖浩龙"
+  ],
+  "contact": {
+    "homepage": "https://gitee.com/AnNight/biome-snapshot",
+    "sources": "https://gitee.com/AnNight/biome-snapshot",
+    "issues": "https://gitee.com/AnNight/biome-snapshot/issues"
+  },
   "license": "Apache-2.0",
   "icon": "assets/biome-snapshot/icon.png",
   "environment": "*",
