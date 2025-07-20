@@ -1,0 +1,7 @@
+{
+  "argument.enum.invalid": "Incorrect parameters",
+  "command.biome-snapshot.start": "The game has been paused. Biome screenshot is being generated. Please wait a moment...",
+  "command.biome-snapshot.success-prefix": "Saved biome screenshot as ",
+  "command.biome-snapshot.fail": "The screenshot of the biome failed to save",
+  "command.biome-snapshot.not-found": "The color configuration of the following biome is missing: "
+}

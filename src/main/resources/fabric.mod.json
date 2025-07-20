@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "id": "biome-snapshot",
+  "version": "1.0",
+  "name": "biome-snapshot",
+  "description": "jie_shao",
+  "authors": [],
+  "contact": {},
+  "license": "Apache-2.0",
+  "icon": "assets/biome-snapshot/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "pers.liaohaolong.biomesnapshot.BiomeSnapshot"
+    ]
+  },
+  "depends": {
+    "fabricloader": ">=${loader_version}",
+    "fabric": "*",
+    "minecraft": "${minecraft_version}"
+  }
+}
