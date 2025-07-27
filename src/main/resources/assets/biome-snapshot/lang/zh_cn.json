@@ -1,7 +1,9 @@
 {
   "argument.enum.invalid": "不正确的参数",
-  "command.biome-snapshot.start": "游戏已暂停，正在生成生物群系截图，请稍等...",
-  "command.biome-snapshot.success-prefix": "已将生物群系截图保存为",
-  "command.biome-snapshot.fail": "生物群系截图保存失败",
-  "command.biome-snapshot.not-found": "以下生物群系的颜色配置丢失: "
+  "command.biome-snapshot.start": "游戏已暂停，正在生成生物群系快照，请稍等...",
+  "command.biome-snapshot.savingChunks": "保存区块中...",
+  "command.biome-snapshot.savingDone": "保存完毕",
+  "command.biome-snapshot.savingImage": "保存图片中...",
+  "command.biome-snapshot.success-prefix": "已将生物群系快照保存为",
+  "command.biome-snapshot.fail": "生物群系快照保存失败"
 }

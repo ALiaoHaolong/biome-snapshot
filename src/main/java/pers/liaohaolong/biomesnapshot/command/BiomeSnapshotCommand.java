@@ -2,54 +2,56 @@ package pers.liaohaolong.biomesnapshot.command;
 
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.context.CommandContext;
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.command.argument.ColumnPosArgumentType;
 import net.minecraft.server.command.ServerCommandSource;
+import net.minecraft.server.world.ChunkTicketType;
 import net.minecraft.server.world.ServerWorld;
-import net.minecraft.text.*;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.text.BaseText;
+import net.minecraft.text.ClickEvent;
+import net.minecraft.text.LiteralText;
+import net.minecraft.text.TranslatableText;
+import net.minecraft.util.Identifier;
+import net.minecraft.util.math.ChunkPos;
+import net.minecraft.util.math.ChunkSectionPos;
 import net.minecraft.util.math.ColumnPos;
-import net.minecraft.util.registry.RegistryEntry;
-import net.minecraft.world.Heightmap;
-import net.minecraft.world.biome.Biome;
+import net.minecraft.world.chunk.ChunkStatus;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
-import pers.liaohaolong.biomesnapshot.biomecolor.resolver.DefaultBiomeColorResolver;
-import pers.liaohaolong.biomesnapshot.biomecolor.resolver.MainlandOceanBiomeColorResolver;
-import pers.liaohaolong.biomesnapshot.biomecolor.resolver.MainlandRiverOceanBiomeColorResolver;
-import pers.liaohaolong.biomesnapshot.command.argument.BiomeSnapshotMode;
+import pers.liaohaolong.biomesnapshot.BiomeSnapshotRegistry;
+import pers.liaohaolong.biomesnapshot.color.ColorWrapper;
+import pers.liaohaolong.biomesnapshot.command.argument.SnapshotMode;
 import pers.liaohaolong.biomesnapshot.command.argument.EnumArgumentType;
-import pers.liaohaolong.biomesnapshot.biomecolor.*;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.LinkedHashSet;
-import java.util.Set;
-import java.util.function.Consumer;
 
+import static pers.liaohaolong.biomesnapshot.BiomeSnapshot.MOD_ID;
+
+/**
+ * <h3>/biome-snapshot 命令</h3>
+ */
 public class BiomeSnapshotCommand implements Command<ServerCommandSource> {
 
     private static final Logger LOGGER = LogManager.getLogger();
 
-    private final BiomeColorResolver defaultBiomeColorResolver = new DefaultBiomeColorResolver();
-    private final BiomeColorResolver mainlandOceanBiomeColorResolver = new MainlandOceanBiomeColorResolver();
-    private final BiomeColorResolver mainlandRiverOceanBiomeColorResolver = new MainlandRiverOceanBiomeColorResolver();
-
     @Override
-    public int run(CommandContext<ServerCommandSource> context) throws CommandSyntaxException {
+    public int run(CommandContext<ServerCommandSource> context) {
         // 发送提示
         context.getSource().sendFeedback(new TranslatableText("command.biome-snapshot.start"), false);
 
         // 设置文件名与路径
         String fileName = getCurrentTimestamp() + ".png";
-        File file = new File("config/biome_snapshot/" + fileName);
+        String levelName = context.getSource().getServer().getSaveProperties().getLevelName();
+        File directory = new File("config/biome_snapshot/" + levelName);
+        File file = new File(directory, fileName);
 
-        // 获取截图模式
-        BiomeSnapshotMode mode = EnumArgumentType.getEnum(context, "mode", BiomeSnapshotMode.class);
+        // 获取快照模式
+        SnapshotMode mode = EnumArgumentType.getEnum(context, "mode", SnapshotMode.class);
         // 获取起始坐标
         ColumnPos pos1 = ColumnPosArgumentType.getColumnPos(context, "pos1");
         // 获取结束坐标
@@ -65,87 +67,96 @@ public class BiomeSnapshotCommand implements Command<ServerCommandSource> {
         int height = endPos.z - startPos.z + 1;
         BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
 
-        // 未找到生物群系处理器
-        Set<String> notFoundBiomes = new LinkedHashSet<>();
-        Consumer<RegistryEntry<Biome>> notFountHandler = registryEntry -> notFoundBiomes.add(registryEntry.getKey().get().getValue().getPath());
+        // 颜色解析
+        ColorWrapper colorWrapper = new ColorWrapper();
+        colorWrapper.setColorResolver(BiomeSnapshotRegistry.COLOR_RESOLVER.get(new Identifier(MOD_ID, mode.name().toLowerCase())));
 
-        // 生物群系颜色管理器
-        BiomeColorWrapper biomeColorWrapper = new BiomeColorWrapper(notFountHandler);
-        // 配置生物群系颜色解析器
-        switch (mode) {
-            case DEFAULT:
-                biomeColorWrapper.setBiomeColorFinder(defaultBiomeColorResolver);
-                break;
-            case MAINLAND_OCEAN:
-                biomeColorWrapper.setBiomeColorFinder(mainlandOceanBiomeColorResolver);
-                break;
-            case MAINLAND_RIVER_OCEAN:
-                biomeColorWrapper.setBiomeColorFinder(mainlandRiverOceanBiomeColorResolver);
-                break;
-        }
-
-        // 计算进度
-        int total = width * height;
-        int currentNum = 0;
+        // ------------------------------ 区块缓存命中优化 ------------------------------
+        // 区块起始坐标
+        int startChunkX = ChunkSectionPos.getSectionCoord(startPos.x);
+        int startChunkZ = ChunkSectionPos.getSectionCoord(startPos.z);
+        // 区块结束坐标
+        int endChunkX = ChunkSectionPos.getSectionCoord(endPos.x);
+        int endChunkZ = ChunkSectionPos.getSectionCoord(endPos.z);
+        // 局部变量优化
+        int chunkX, chunkZ;
+        int endX, endZ;
+        int x, z;
+        // ------------------------------ 计算进度/区块回收优化 ------------------------------
+        // 区块总数
+        int totalCountOfChunk = (endChunkX - startChunkX + 1) * (endChunkZ - startChunkZ + 1);
+        // 已处理的区块数
+        int chunkCount = 0;
+        // 上次反馈时间
         long lastTime = System.currentTimeMillis();
-        int lastPercent = 0;
+        // 当前时间/局部变量优化
+        long currentTime;
+        // 当前百分比/局部变量优化
+        int currentPercent;
+        // 是否启用区块优化/局部变量优化
+        boolean enableChunkOptimization = colorWrapper.enableChunkOptimization();
 
         // 绘制生物群系图片
         ServerWorld world = context.getSource().getWorld();
-        for (int x = 0, actualX = startPos.x; x < width; x++, actualX++) {
-            for (int z = 0, actualZ = startPos.z; z < height; z++, actualZ++, currentNum++) {
-                // 生成当前xyz坐标
-                BlockPos currentPos = new BlockPos(
-                        actualX,
-                        world.getTopY(Heightmap.Type.WORLD_SURFACE, actualX, actualZ),
-                        actualZ
-                );
-                // 设置图片颜色
-                image.setRGB(x, z, biomeColorWrapper.getColor(world.getBiome(currentPos)).getRGB());
-            }
-            // 计算进度
-            long currentTime = System.currentTimeMillis();
-            int currentPercent = (int) ((double) currentNum / total * 100);
-            if (currentTime - lastTime > 1000 && (currentPercent != lastPercent || currentTime - lastTime > 5000)) {
-                lastTime = currentTime;
-                lastPercent = currentPercent;
-                context.getSource().sendFeedback(new LiteralText(lastPercent + "%"), false);
+        // 遍历区块
+        for (chunkX = startChunkX; chunkX <= endChunkX; chunkX++) {
+            for (chunkZ = startChunkZ; chunkZ <= endChunkZ; chunkZ++) {
+                // 获取区块内的起始坐标和结束坐标，并遍历
+                endX = Math.min(ChunkSectionPos.getBlockCoord(chunkX) | 0xF, endPos.x);
+                endZ = Math.min(ChunkSectionPos.getBlockCoord(chunkZ) | 0xF, endPos.z);
+                for (x = Math.max(ChunkSectionPos.getBlockCoord(chunkX), startPos.x); x <= endX; x++) {
+                    for (z = Math.max(ChunkSectionPos.getBlockCoord(chunkZ), startPos.z); z <= endZ; z++) {
+                        // 获取并设置颜色
+                        image.setRGB(x - startPos.x, z - startPos.z, colorWrapper.getColor(world, x, z));
+                    }
+                }
+
+                // 区块处理计数
+                chunkCount++;
+                // 计算进度，发送间隔5秒
+                currentTime = System.currentTimeMillis();
+                if (currentTime - lastTime > 5000) {
+                    lastTime = currentTime;
+                    currentPercent = (int) Math.ceil((double) chunkCount / totalCountOfChunk * 100) - 1;
+                    context.getSource().sendFeedback(new LiteralText(currentPercent + "% chunk:" + chunkCount + "/" + totalCountOfChunk), false);
+                }
+
+                // 区块回收优化
+                if (enableChunkOptimization) {
+                    // 删除区块票据
+                    ChunkPos chunkPos = new ChunkPos(chunkX, chunkZ);
+                    world.getChunkManager().threadedAnvilChunkStorage.getTicketManager().removeTicketWithLevel(ChunkTicketType.UNKNOWN, chunkPos, 33 + ChunkStatus.getDistanceFromFull(ChunkStatus.NOISE), chunkPos);
+                    // 定期卸载区块
+                    if (chunkCount % 1000 == 0) {
+                        context.getSource().sendFeedback(new TranslatableText("command.biome-snapshot.savingChunks"), false);
+                        world.getChunkManager().save(true);
+                        context.getSource().sendFeedback(new TranslatableText("command.biome-snapshot.savingDone"), false);
+                    }
+                }
             }
         }
 
-        // 检查文件夹
-        File directory = new File("config/biome_snapshot");
-        if (!directory.exists()) {
-            directory.mkdirs();
-        }
-
-        // 保存图片
-        boolean success = false;
+        // 保存
         try {
+            context.getSource().sendFeedback(new TranslatableText("command.biome-snapshot.savingImage"), false);
+            // 检查文件夹
+            if (!directory.exists() && !directory.mkdirs())
+                throw new IOException("Failed to create directory");
+            // 保存图片
             ImageIO.write(image, "png", file);
-            success = true;
         } catch (Exception e) {
             LOGGER.error("Failed to save biome snapshot image", e);
-        }
-
-        // 发送反馈
-        if (success) {
-            BaseText feedback1 = new TranslatableText("command.biome-snapshot.success-prefix");
-            BaseText feedback2 = new LiteralText(fileName);
-            feedback2.setStyle(feedback2.getStyle().withUnderline(true));
-            feedback2.setStyle(feedback2.getStyle().withClickEvent(new ClickEvent(ClickEvent.Action.OPEN_FILE, file.getAbsolutePath())));
-            context.getSource().sendFeedback(feedback1.append(feedback2), false);
-        } else {
+            // 保存失败
             context.getSource().sendFeedback(new TranslatableText("command.biome-snapshot.fail"), false);
             return 0;
         }
 
-        // 打印错误群系
-        if (!notFoundBiomes.isEmpty()) {
-            BaseText feedback1 = new TranslatableText("command.biome-snapshot.not-found");
-            BaseText feedback2 = new LiteralText(String.join(", ", notFoundBiomes));
-            context.getSource().sendFeedback(feedback1.append(feedback2), false);
-        }
+        // 成功
+        BaseText feedback1 = new TranslatableText("command.biome-snapshot.success-prefix");
+        BaseText feedback2 = new LiteralText(fileName);
+        feedback2.setStyle(feedback2.getStyle().withUnderline(true));
+        feedback2.setStyle(feedback2.getStyle().withClickEvent(new ClickEvent(ClickEvent.Action.OPEN_FILE, file.getAbsolutePath())));
+        context.getSource().sendFeedback(feedback1.append(feedback2), false);
         return 1;
     }
 

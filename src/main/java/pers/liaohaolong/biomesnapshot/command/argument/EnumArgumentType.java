@@ -7,7 +7,6 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
 import com.mojang.brigadier.suggestion.Suggestions;
 import com.mojang.brigadier.suggestion.SuggestionsBuilder;
-import net.minecraft.text.LiteralText;
 import net.minecraft.text.TranslatableText;
 
 import java.util.Arrays;
@@ -15,11 +14,14 @@ import java.util.Collection;
 import java.util.concurrent.CompletableFuture;
 
 /**
- * 枚举参数类型，仿照原版的其他参数类型编写
+ * <h3>枚举参数类型</h3>
+ *
+ * <p>仿照原版的其他参数类型编写</p>
  *
  * @param <E> 枚举类型
  */
 public class EnumArgumentType<E extends Enum<E>> implements ArgumentType<E> {
+
     private final Class<E> enumClass;
     private final Collection<String> examples;
 
@@ -69,4 +71,5 @@ public class EnumArgumentType<E extends Enum<E>> implements ArgumentType<E> {
     public Collection<String> getExamples() {
         return examples;
     }
+
 }

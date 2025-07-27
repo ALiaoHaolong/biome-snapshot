@@ -1,11 +1,9 @@
-package pers.liaohaolong.biomesnapshot.biomecolor.resolver;
-
-import java.awt.*;
+package pers.liaohaolong.biomesnapshot.color.resolver.biome;
 
 /**
- * 默认生物群系颜色
+ * <h3>生物群系颜色</h3>
  */
-public enum DefaultBiomeColor {
+public enum BiomeColor {
 
     // 以下生物群系颜色来自 https://github.com/toolbox4minecraft/amidst/wiki/Biome-Color-Table
     OCEAN(0x000070),
@@ -109,13 +107,13 @@ public enum DefaultBiomeColor {
     DRIPSTONE_CAVES(0xC1A58F),
     LUSH_CAVES(0xDF9634);
 
-    private final Color color;
+    private final int color;
 
-    DefaultBiomeColor(int rgb) {
-        this.color = new Color(rgb);
+    BiomeColor(int rgb) {
+        this.color = rgb;
     }
 
-    public Color getColor() {
+    public int getColor() {
         return color;
     }
 

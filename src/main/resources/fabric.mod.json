@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "id": "biome-snapshot",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "name": "Biome Snapshot",
   "description": "Adds a mod to export the biome images of the specified area.",
   "authors": [
