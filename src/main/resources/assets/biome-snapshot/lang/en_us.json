@@ -4,6 +4,6 @@
   "command.biome-snapshot.savingChunks": "Saving chunks...",
   "command.biome-snapshot.savingDone": "Saving done",
   "command.biome-snapshot.savingImage": "Saving image...",
-  "command.biome-snapshot.success-prefix": "Saved biome screenshot as ",
+  "command.biome-snapshot.success": "Saved biome screenshot as %s",
   "command.biome-snapshot.fail": "The screenshot of the biome failed to save"
 }
