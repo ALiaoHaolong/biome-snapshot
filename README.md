@@ -2,6 +2,12 @@
 
 ![](icon128.png)
 
+Mod 百科：  
+[Biome Snapshot - MC百科|最大的Minecraft中文MOD百科](https://www.mcmod.cn/class/20861.html)
+
+报告问题：  
+[Issues · 暗夜/Biome Snapshot - Gitee.com](https://gitee.com/AnNight/biome-snapshot/issues)
+
 ## 介绍
 
 一个 Minecraft 模组，提供`/biome-snapshot`命令来生成不同模式的地图快照。
