@@ -75,7 +75,12 @@ Mod 百科：
 
 ## 开发者
 
-- [An_Night](https://gitee.com/AnNight)
+廖浩龙，联系方式：
+
+- aliaohaolong@qq.com
+- aliaohaolong@gmail.com
+- [Gitee An_Night](https://gitee.com/AnNight)
+- [Mod百科 暗夜](https://center.mcmod.cn/50754/)
 
 ## 许可证
 
