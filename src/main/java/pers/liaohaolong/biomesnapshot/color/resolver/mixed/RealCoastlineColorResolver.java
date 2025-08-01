@@ -22,7 +22,7 @@ public class RealCoastlineColorResolver implements ColorResolver {
         Chunk chunk = world.getChunkManager().getChunk(
                 ChunkSectionPos.getSectionCoord(x),
                 ChunkSectionPos.getSectionCoord(z),
-                ChunkStatus.NOISE,
+                ChunkStatus.CARVERS,
                 true
         );
 

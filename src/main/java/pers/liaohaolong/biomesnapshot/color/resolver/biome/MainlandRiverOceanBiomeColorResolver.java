@@ -12,7 +12,7 @@ public class MainlandRiverOceanBiomeColorResolver extends AbstractBiomeColorReso
     @Override
     protected int getBiomeColor(ServerWorld world, BlockPos pos) {
         // 获取生物群系的分类名称
-        Biome.Category category = Biome.getCategory(world.getBiome(pos));
+        Biome.Category category = world.getBiome(pos).getCategory();
         return switch (category) {
             case OCEAN -> 0x000070;
             case RIVER -> 0x0000FF;

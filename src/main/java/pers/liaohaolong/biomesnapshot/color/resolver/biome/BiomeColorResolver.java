@@ -2,6 +2,7 @@ package pers.liaohaolong.biomesnapshot.color.resolver.biome;
 
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.registry.BuiltinRegistries;
 import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.biome.Biome;
 import org.apache.logging.log4j.LogManager;
@@ -18,7 +19,7 @@ public class BiomeColorResolver extends AbstractBiomeColorResolver {
 
     @Override
     protected int getBiomeColor(ServerWorld world, BlockPos pos) {
-        Optional<RegistryKey<Biome>> biomeRegistryKey = world.getBiome(pos).getKey();
+        Optional<RegistryKey<Biome>> biomeRegistryKey = BuiltinRegistries.BIOME.getKey(world.getBiome(pos));
         if (biomeRegistryKey.isPresent()) {
             // 获取生物群系的名称
             String key = biomeRegistryKey.get().getValue().getPath();
