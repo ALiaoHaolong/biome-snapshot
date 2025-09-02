@@ -4,10 +4,10 @@ import net.fabricmc.fabric.api.event.registry.FabricRegistryBuilder;
 import net.fabricmc.fabric.api.event.registry.RegistryAttribute;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
-import pers.liaohaolong.biomesnapshot.color.ColorResolver;
+import pers.liaohaolong.biomesnapshot.color.resolver.ColorResolver;
 
 import static pers.liaohaolong.biomesnapshot.BiomeSnapshot.MOD_ID;
-import static pers.liaohaolong.biomesnapshot.color.ColorResolvers.*;
+import static pers.liaohaolong.biomesnapshot.color.resolver.ColorResolvers.*;
 
 /**
  * <h3>注册表</h3>

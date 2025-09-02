@@ -7,7 +7,7 @@ import net.fabricmc.fabric.api.command.v1.CommandRegistrationCallback;
 import net.minecraft.command.argument.ColumnPosArgumentType;
 import net.minecraft.server.command.ServerCommandSource;
 import pers.liaohaolong.biomesnapshot.command.BiomeSnapshotCommand;
-import pers.liaohaolong.biomesnapshot.command.argument.SnapshotMode;
+import pers.liaohaolong.biomesnapshot.command.argument.ColorResolverEnum;
 import pers.liaohaolong.biomesnapshot.command.argument.EnumArgumentType;
 
 import static net.minecraft.server.command.CommandManager.argument;
@@ -40,12 +40,12 @@ public class BiomeSnapshot implements ModInitializer {
         // 创建命令
         LiteralArgumentBuilder<ServerCommandSource> command = literal(MOD_ID)
                 .requires(source -> source.hasPermissionLevel(4))
-                // 配色模式
-                .then(argument("mode", EnumArgumentType.enumArgument(SnapshotMode.class))
+                // 颜色解析器
+                .then(argument("colorResolver", EnumArgumentType.enumArgument(ColorResolverEnum.class))
                         // 起始坐标
-                        .then(argument("pos1", ColumnPosArgumentType.columnPos())
+                        .then(argument("from", ColumnPosArgumentType.columnPos())
                                 // 结束坐标
-                                .then(argument("pos2", ColumnPosArgumentType.columnPos())
+                                .then(argument("to", ColumnPosArgumentType.columnPos())
                                         .executes(COMMAND)
                                 )
                         )
