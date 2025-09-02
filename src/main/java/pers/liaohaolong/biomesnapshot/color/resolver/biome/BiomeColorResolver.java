@@ -29,6 +29,7 @@ public class BiomeColorResolver extends AbstractBiomeColorResolver {
                 }
             }
             LOGGER.warn("无法解析的生物群系名称: {}", key);
+            return -1;
         }
         LOGGER.warn("异常的生物群系注册状态");
         return -1;
