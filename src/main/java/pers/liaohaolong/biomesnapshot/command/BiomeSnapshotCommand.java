@@ -16,9 +16,9 @@ import net.minecraft.world.chunk.ChunkStatus;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
-import pers.liaohaolong.biomesnapshot.color.ColorWrapper;
-import pers.liaohaolong.biomesnapshot.command.argument.SnapshotMode;
-import pers.liaohaolong.biomesnapshot.command.argument.SnapshotModeArgumentType;
+import pers.liaohaolong.biomesnapshot.color.resolver.ColorResolverWrapper;
+import pers.liaohaolong.biomesnapshot.command.argument.ColorResolverEnum;
+import pers.liaohaolong.biomesnapshot.command.argument.ColorResolverArgumentType;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -26,6 +26,8 @@ import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+
+import static pers.liaohaolong.biomesnapshot.BiomeSnapshot.MOD_ID;
 
 /**
  * <h3>/biome-snapshot 命令</h3>
@@ -42,15 +44,15 @@ public class BiomeSnapshotCommand implements Command<ServerCommandSource> {
         // 设置文件名与路径
         String fileName = getCurrentTimestamp() + ".png";
         String levelName = context.getSource().getServer().getSaveProperties().getLevelName();
-        File directory = new File("config/biome_snapshot/" + levelName);
+        File directory = new File("config/" + MOD_ID + "/" + levelName);
         File file = new File(directory, fileName);
 
-        // 获取快照模式
-        SnapshotMode mode = SnapshotModeArgumentType.getSnapshotMode(context, "mode");
+        // 获取颜色解析器枚举值
+        ColorResolverEnum colorResolverEnum = ColorResolverArgumentType.getColorResolverEnum(context, "colorResolver");
         // 获取起始坐标
-        ColumnPos pos1 = ColumnPosArgumentType.getColumnPos(context, "pos1");
+        ColumnPos pos1 = ColumnPosArgumentType.getColumnPos(context, "from");
         // 获取结束坐标
-        ColumnPos pos2 = ColumnPosArgumentType.getColumnPos(context, "pos2");
+        ColumnPos pos2 = ColumnPosArgumentType.getColumnPos(context, "to");
 
         // 规格化起始坐标
         ColumnPos startPos = new ColumnPos(Math.min(pos1.x(), pos2.x()),  Math.min(pos1.z(), pos2.z()));
@@ -63,8 +65,8 @@ public class BiomeSnapshotCommand implements Command<ServerCommandSource> {
         BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
 
         // 颜色解析
-        ColorWrapper colorWrapper = new ColorWrapper();
-        colorWrapper.setColorResolver(mode.getColorResolver());
+        ColorResolverWrapper colorResolverWrapper = new ColorResolverWrapper();
+        colorResolverWrapper.setColorResolver(colorResolverEnum.getColorResolver());
 
         // ------------------------------ 区块缓存命中优化 ------------------------------
         // 区块起始坐标
@@ -89,7 +91,7 @@ public class BiomeSnapshotCommand implements Command<ServerCommandSource> {
         // 当前百分比/局部变量优化
         int currentPercent;
         // 是否启用区块优化/局部变量优化
-        boolean enableChunkOptimization = colorWrapper.enableChunkOptimization();
+        boolean enableChunkOptimization = colorResolverWrapper.enableChunkOptimization();
 
         // 绘制生物群系图片
         ServerWorld world = context.getSource().getWorld();
@@ -102,7 +104,7 @@ public class BiomeSnapshotCommand implements Command<ServerCommandSource> {
                 for (x = Math.max(ChunkSectionPos.getBlockCoord(chunkX), startPos.x()); x <= endX; x++) {
                     for (z = Math.max(ChunkSectionPos.getBlockCoord(chunkZ), startPos.z()); z <= endZ; z++) {
                         // 获取并设置颜色
-                        image.setRGB(x - startPos.x(), z - startPos.z(), colorWrapper.getColor(world, x, z));
+                        image.setRGB(x - startPos.x(), z - startPos.z(), colorResolverWrapper.getColor(world, x, z));
                     }
                 }
 

@@ -6,7 +6,7 @@ import net.minecraft.util.math.ChunkSectionPos;
 import net.minecraft.world.Heightmap;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.ChunkStatus;
-import pers.liaohaolong.biomesnapshot.color.ColorResolver;
+import pers.liaohaolong.biomesnapshot.color.resolver.ColorResolver;
 
 /**
  * <h3>抽象的生物群系颜色解析器</h3>

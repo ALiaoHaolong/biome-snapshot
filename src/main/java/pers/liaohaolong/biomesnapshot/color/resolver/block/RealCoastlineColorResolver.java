@@ -1,4 +1,4 @@
-package pers.liaohaolong.biomesnapshot.color.resolver.mixed;
+package pers.liaohaolong.biomesnapshot.color.resolver.block;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.server.world.ServerWorld;
@@ -7,7 +7,7 @@ import net.minecraft.util.math.ChunkSectionPos;
 import net.minecraft.world.Heightmap;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.ChunkStatus;
-import pers.liaohaolong.biomesnapshot.color.ColorResolver;
+import pers.liaohaolong.biomesnapshot.color.resolver.ColorResolver;
 
 /**
  * <h3>真实的海岸线颜色解析器</h3>

@@ -7,11 +7,11 @@ import net.minecraft.command.argument.serialize.ConstantArgumentSerializer;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.util.Identifier;
-import pers.liaohaolong.biomesnapshot.color.ColorResolver;
-import pers.liaohaolong.biomesnapshot.command.argument.SnapshotModeArgumentType;
+import pers.liaohaolong.biomesnapshot.color.resolver.ColorResolver;
+import pers.liaohaolong.biomesnapshot.command.argument.ColorResolverArgumentType;
 
 import static pers.liaohaolong.biomesnapshot.BiomeSnapshot.MOD_ID;
-import static pers.liaohaolong.biomesnapshot.color.ColorResolvers.*;
+import static pers.liaohaolong.biomesnapshot.color.resolver.ColorResolvers.*;
 
 /**
  * <h3>注册表</h3>
@@ -53,9 +53,9 @@ public class BiomeSnapshotRegistry {
      */
     public static void registerArgumentType() {
         ArgumentTypeRegistry.registerArgumentType(
-                Identifier.of(MOD_ID, "snapshot_mode"),
-                SnapshotModeArgumentType.class,
-                ConstantArgumentSerializer.of(SnapshotModeArgumentType::snapshotMode)
+                Identifier.of(MOD_ID, "color_resolver"),
+                ColorResolverArgumentType.class,
+                ConstantArgumentSerializer.of(ColorResolverArgumentType::colorResolver)
         );
     }
 

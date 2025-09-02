@@ -1,4 +1,4 @@
-package pers.liaohaolong.biomesnapshot.color;
+package pers.liaohaolong.biomesnapshot.color.resolver;
 
 import net.minecraft.server.world.ServerWorld;
 
@@ -6,17 +6,17 @@ import java.awt.*;
 import java.util.Objects;
 
 /**
- * <h3>颜色包装器</h3>
+ * <h3>颜色解析器包装器</h3>
  *
  * <p>可动态配置颜色解析器{@link #colorResolver}，默认颜色。</p>
  */
-public class ColorWrapper implements ColorResolver {
+public class ColorResolverWrapper implements ColorResolver {
 
     private ColorResolver colorResolver;
 
     private int defaultColor;
 
-    public ColorWrapper() {
+    public ColorResolverWrapper() {
         setColorResolver((world, x, z) -> -1);
         setDefaultColor(Color.BLACK);
     }
