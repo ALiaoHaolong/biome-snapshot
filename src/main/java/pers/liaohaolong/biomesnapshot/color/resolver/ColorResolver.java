@@ -1,4 +1,4 @@
-package pers.liaohaolong.biomesnapshot.color;
+package pers.liaohaolong.biomesnapshot.color.resolver;
 
 import net.minecraft.server.world.ServerWorld;
 
