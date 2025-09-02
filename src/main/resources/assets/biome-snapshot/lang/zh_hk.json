@@ -1,0 +1,9 @@
+{
+  "argument.enum.invalid": "不正確的參數",
+  "command.biome-snapshot.start": "遊戲已暫停，正在生成生物羣系快照，請稍等...",
+  "command.biome-snapshot.savingChunks": "保存區塊中...",
+  "command.biome-snapshot.savingDone": "保存完畢",
+  "command.biome-snapshot.savingImage": "保存圖片中...",
+  "command.biome-snapshot.success": "已將生物羣系快照保存為%s",
+  "command.biome-snapshot.fail": "生物羣系快照保存失敗"
+}
