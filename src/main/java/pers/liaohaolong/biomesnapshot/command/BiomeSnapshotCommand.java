@@ -6,8 +6,6 @@ import net.minecraft.command.argument.ColumnPosArgumentType;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.world.ChunkTicketType;
 import net.minecraft.server.world.ServerWorld;
-import net.minecraft.text.BaseText;
-import net.minecraft.text.ClickEvent;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
@@ -20,8 +18,8 @@ import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
 import pers.liaohaolong.biomesnapshot.BiomeSnapshotRegistry;
 import pers.liaohaolong.biomesnapshot.color.ColorWrapper;
-import pers.liaohaolong.biomesnapshot.command.argument.SnapshotMode;
 import pers.liaohaolong.biomesnapshot.command.argument.EnumArgumentType;
+import pers.liaohaolong.biomesnapshot.command.argument.SnapshotMode;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -152,11 +150,7 @@ public class BiomeSnapshotCommand implements Command<ServerCommandSource> {
         }
 
         // 成功
-        BaseText feedback1 = new TranslatableText("command.biome-snapshot.success-prefix");
-        BaseText feedback2 = new LiteralText(fileName);
-        feedback2.setStyle(feedback2.getStyle().withUnderline(true));
-        feedback2.setStyle(feedback2.getStyle().withClickEvent(new ClickEvent(ClickEvent.Action.OPEN_FILE, file.getAbsolutePath())));
-        context.getSource().sendFeedback(feedback1.append(feedback2), false);
+        context.getSource().sendFeedback(new TranslatableText("command.biome-snapshot.success", file.getName()), false);
         return 1;
     }
 

@@ -4,6 +4,6 @@
   "command.biome-snapshot.savingChunks": "保存区块中...",
   "command.biome-snapshot.savingDone": "保存完毕",
   "command.biome-snapshot.savingImage": "保存图片中...",
-  "command.biome-snapshot.success-prefix": "已将生物群系快照保存为",
+  "command.biome-snapshot.success": "已将生物群系快照保存为%s",
   "command.biome-snapshot.fail": "生物群系快照保存失败"
 }
