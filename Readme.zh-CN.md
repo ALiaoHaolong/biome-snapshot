@@ -2,17 +2,26 @@
 
 ![](icon128.png)
 
+Modrinth：  
+[Biome Snapshot - Minecraft Mod](https://modrinth.com/mod/biome-snapshot)
+
 Mod 百科：  
 [Biome Snapshot - MC百科|最大的Minecraft中文MOD百科](https://www.mcmod.cn/class/20861.html)
 
+源码：  
+[Gitee.com - 暗夜/Biome Snapshot](https://gitee.com/AnNight/biome-snapshot)
+
 报告问题：  
 [Issues · 暗夜/Biome Snapshot - Gitee.com](https://gitee.com/AnNight/biome-snapshot/issues)
+
+Wiki：  
+[Wiki - Gitee.com](https://gitee.com/AnNight/biome-snapshot/wikis)
 
 ## 介绍
 
 这个模组提供了一个命令，来将指定坐标范围的生物群系或地形状况导出为平面图（需要 4 级管理员权限）。
 
-导出的图片保存在 `config/biome_snapshot/存档名称/` 中。
+导出的图片保存在 `config/biome-snapshot/存档名称/` 中。
 
 多语言支持（英文和中文）。
 
@@ -34,14 +43,14 @@ Mod 百科：
 
 * `<colorResolver>`：[颜色解析器](#颜色解析器)
 
-   指定要使用的颜色解析器。必须为`biome`、`mainland_ocean_biome`、`mainland_river_ocean_biome`或`real_coastline`。若不是则此命令将无法解析。
+   指定要使用的颜色解析器。必须为`BIOME`、`MAINLAND_OCEAN_BIOME`、`MAINLAND_RIVER_OCEAN_BIOME`或`REAL_COASTLINE`。若不是则此命令将无法解析。
 
    示例
 
-   * biome
-   * mainland_ocean_biome
-   * mainland_river_ocean_biome
-   * real_coastline
+   * BIOME
+   * MAINLAND_OCEAN_BIOME
+   * MAINLAND_RIVER_OCEAN_BIOME
+   * REAL_COASTLINE
 
 * `<from>`：[column_pos](https://zh.minecraft.wiki/w/%E5%8F%82%E6%95%B0%E7%B1%BB%E5%9E%8B#minecraft:column_pos)和`<to>`：[column_pos](https://zh.minecraft.wiki/w/%E5%8F%82%E6%95%B0%E7%B1%BB%E5%9E%8B#minecraft:column_pos)
 
@@ -57,37 +66,37 @@ Mod 百科：
 
 ### 生物群系颜色解析器
 
-ID：`biome`。
+ID：`BIOME`。
 
 以生物群系为基础，每个生物群系都有自己独特的颜色。
 
-示例：`/biome-snapshot biome -5000 -5000 5000 5000`
+示例：`/biome-snapshot BIOME -5000 -5000 5000 5000`
 
 ![](doc/Biome.png)
 
 ### 大陆海洋生物群系颜色解析器
 
-ID：`mainland_ocean_biome`。
+ID：`MAINLAND_OCEAN_BIOME`。
 
 以生物群系为基础，将所有生物群系划分为大陆与海洋两类，大陆使用平原的颜色表示（翠绿色），海洋使用海洋的颜色表示（深蓝色）。
 
-示例：`/biome-snapshot mainland_ocean_biome -5000 -5000 5000 5000`
+示例：`/biome-snapshot MAINLAND_OCEAN_BIOME -5000 -5000 5000 5000`
 
 ![](doc/MainlandOceanBiome.png)
 
 ### 大陆河流海洋生物群系颜色解析器
 
-ID：`mainland_river_ocean_biome`。
+ID：`MAINLAND_RIVER_OCEAN_BIOME`。
 
 以生物群系为基础，将所有生物群系划分为大陆、河流与海洋三类，大陆使用平原的颜色表示（翠绿色），河流使用河流的颜色表示（蓝色），海洋使用海洋的颜色表示（深蓝色）。
 
-示例：`/biome-snapshot mainland_river_ocean_biome -5000 -5000 5000 5000`
+示例：`/biome-snapshot MAINLAND_RIVER_OCEAN_BIOME -5000 -5000 5000 5000`
 
 ![](doc/MainlandRiverOceanBiome.png)
 
 ### 真实的海岸线颜色解析器
 
-ID：`real_coastline`。
+ID：`REAL_COASTLINE`。
 
 > “默认情况下，1.18及以上版本的海岸线不会完美匹配。这不是一个bug，而是因为地图显示的是底层的生物群落，而不是确切的地形。靠近海岸、海洋和河流的生物群落通常有陆地，而陆地生物群落可以在水下。”  
 > —— [CHUNKBASE](https://www.chunkbase.com/apps/seed-map)
@@ -100,7 +109,7 @@ ID：`real_coastline`。
 
 另外，后续的地形雕刻（CARVERS）等阶段仍可能少量的改变海岸线，但这些改变不大，并且将区块生成到这些后期阶段所需要的时间和空间相比生成到噪声（NOISE）阶段（早期阶段）都大的多，后续可能会为此拆分成两个独立的颜色解析器以供选择。
 
-示例：`/biome-snapshot real_coastline -5000 -5000 5000 5000`
+示例：`/biome-snapshot REAL_COASTLINE -5000 -5000 5000 5000`
 
 ![](doc/RealCoastline.png)
 
