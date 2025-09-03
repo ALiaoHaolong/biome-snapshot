@@ -2,17 +2,26 @@
 
 ![](icon128.png)
 
+Modrinth：  
+[Biome Snapshot - Minecraft Mod](https://modrinth.com/mod/biome-snapshot)
+
 Mod 百科:   
 [Biome Snapshot - MC百科|最大的Minecraft中文MOD百科](https://www.mcmod.cn/class/20861.html)
 
+Source:  
+[Gitee.com - 暗夜/Biome Snapshot](https://gitee.com/AnNight/biome-snapshot)
+
 Issues:   
 [Issues · 暗夜/Biome Snapshot - Gitee.com](https://gitee.com/AnNight/biome-snapshot/issues)
+
+Wiki:  
+[Wiki - Gitee.com](https://gitee.com/AnNight/biome-snapshot/wikis)
 
 ## Introduction
 
 This mod provides a command to export the biome or terrain status of a specified coordinate range as a flat map (requires level 4 admin privileges).
 
-The exported image is saved in `config/biome_snapshot/<levelName>/`.
+The exported image is saved in `config/biome-snapshot/<levelName>/`.
 
 Multi-language support (English and Chinese).
 
@@ -34,14 +43,14 @@ Matters needing attention:
 
 - `<colorResolver>`: [Color Resolvers](#color-resolvers)
 
-   Specifies the color resolver to use. It must be `biome`, `mainland_ocean_biome`, `mainland_river_ocean_biome`, or `real_coastline`. If not, this command will not be parsed.
+   Specifies the color resolver to use. It must be `BIOME`, `MAINLAND_OCEAN_BIOME`, `MAINLAND_RIVER_OCEAN_BIOME`, or `REAL_COASTLINE`. If not, this command will not be parsed.
 
    Examples
 
-   - biome
-   - mainland_ocean_biome
-   - mainland_river_ocean_biome
-   - real_coastline
+   - BIOME
+   - MAINLAND_OCEAN_BIOME
+   - MAINLAND_RIVER_OCEAN_BIOME
+   - REAL_COASTLINE
 
 - `<from>`: [column_pos](https://minecraft.wiki/w/Argument_types#minecraft:column_pos) and`<to>`: [column_pos](https://minecraft.wiki/w/Argument_types#minecraft:column_pos)
 
@@ -57,37 +66,37 @@ Matters needing attention:
 
 ### Biome Color Resolver
 
-ID: `biome`.
+ID: `BIOME`.
 
 Based on biomes, each biome has its own unique color.
 
-Example: `/biome-snapshot biome -5000 -5000 5000 5000`
+Example: `/biome-snapshot BIOME -5000 -5000 5000 5000`
 
 ![](doc/Biome.png)
 
 ### Mainland Ocean Biome Color Resolver
 
-ID: `mainland_ocean_biome`.
+ID: `MAINLAND_OCEAN_BIOME`.
 
 Based on biomes, all biomes are divided into two categories: mainland and ocean. Mainland is represented by the color of plains (green), and ocean is represented by the color of ocean (dark blue).
 
-Example: `/biome-snapshot mainland_ocean_biome -5000 -5000 5000 5000`
+Example: `/biome-snapshot MAINLAND_OCEAN_BIOME -5000 -5000 5000 5000`
 
 ![](doc/MainlandOceanBiome.png)
 
 ### Mainland River Ocean Biome Color Resolver
 
-ID: `mainland_river_ocean_biome`.
+ID: `MAINLAND_RIVER_OCEAN_BIOME`.
 
 Based on biomes, all biomes are divided into three categories: mainland, river, and ocean. Mainland is represented by the color of plains (green), river is represented by the color of river (blue), and ocean is represented by the color of ocean (dark blue).
 
-Example: `/biome-snapshot mainland_river_ocean_biome -5000 -5000 5000 5000`
+Example: `/biome-snapshot MAINLAND_RIVER_OCEAN_BIOME -5000 -5000 5000 5000`
 
 ![](doc/MainlandRiverOceanBiome.png)
 
 ### Real Coastline Color Resolver
 
-ID: `real_coastline`.
+ID: `REAL_COASTLINE`.
 
 > "By default, the coastlines for versions 1.18 and above don’t match up perfectly. This is not a bug, but rather because the map shows the underlying biomes instead of the exact terrain. Near coasts, ocean and river biomes often have land, while land biomes can be underwater."  
 > By [CHUNKBASE](https://www.chunkbase.com/apps/seed-map)
@@ -100,7 +109,7 @@ It should be noted that the NOISE stage is only an early stage of chunk generati
 
 In addition, subsequent stages such as terrain carving (CARVERS) may still slightly change the coastline, but these changes are not significant. Moreover, the time and space required to generate chunks to these later stages are much greater than those required to generate to the NOISE stage (early stage). In the future, this may be split into two independent color resolvers for selection.
 
-Example: `/biome-snapshot real_coastline -5000 -5000 5000 5000`
+Example: `/biome-snapshot REAL_COASTLINE -5000 -5000 5000 5000`
 
 ![](doc/RealCoastline.png)
 
