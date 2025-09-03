@@ -3,12 +3,19 @@
   "id": "biome-snapshot",
   "version": "1.1.0",
   "name": "Biome Snapshot",
-  "description": "Adds a mod to export the biome images of the specified area.",
+  "description": "This mod provides a command to export the biome or terrain status of a specified coordinate range as a flat map (requires level 4 admin privileges).",
   "authors": [
-    "廖浩龙"
+    {
+      "name": "廖浩龙",
+      "contact": {
+        "email": "aliaohaolong@qq.com"
+      }
+    }
+  ],
+  "contributors": [
   ],
   "contact": {
-    "homepage": "https://gitee.com/AnNight/biome-snapshot",
+    "homepage": "https://modrinth.com/mod/biome-snapshot",
     "sources": "https://gitee.com/AnNight/biome-snapshot",
     "issues": "https://gitee.com/AnNight/biome-snapshot/issues"
   },
@@ -24,5 +31,16 @@
     "fabricloader": ">=${loader_version}",
     "fabric": "*",
     "minecraft": "${minecraft_version}"
+  },
+  "suggests": {
+    "modmenu": "*"
+  },
+  "custom": {
+    "modmenu": {
+      "links": {
+        "modmenu.modrinth": "https://modrinth.com/mod/biome-snapshot",
+        "biome-snapshot.mcmod": "https://www.mcmod.cn/class/20861.html"
+      }
+    }
   }
 }

@@ -5,5 +5,10 @@
   "command.biome-snapshot.savingDone": "Saving done",
   "command.biome-snapshot.savingImage": "Saving image...",
   "command.biome-snapshot.success": "Saved biome screenshot as %s",
-  "command.biome-snapshot.fail": "The screenshot of the biome failed to save"
+  "command.biome-snapshot.fail": "The screenshot of the biome failed to save",
+
+  "modmenu.nameTranslation.biome-snapshot": "Biome Snapshot",
+  "modmenu.descriptionTranslation.biome-snapshot": "This mod provides a command to export the biome or terrain status of a specified coordinate range as a flat map (requires level 4 admin privileges).",
+
+  "biome-snapshot.mcmod": "MC 百科"
 }
