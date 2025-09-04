@@ -4,8 +4,9 @@ import net.fabricmc.fabric.api.command.v2.ArgumentTypeRegistry;
 import net.fabricmc.fabric.api.event.registry.FabricRegistryBuilder;
 import net.fabricmc.fabric.api.event.registry.RegistryAttribute;
 import net.minecraft.command.argument.serialize.ConstantArgumentSerializer;
+import net.minecraft.registry.Registry;
+import net.minecraft.registry.RegistryKey;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
 import pers.liaohaolong.biomesnapshot.color.resolver.ColorResolver;
 import pers.liaohaolong.biomesnapshot.command.argument.ColorResolverArgumentType;
 
@@ -21,7 +22,7 @@ public class BiomeSnapshotRegistry {
      * 自定义注册表：颜色解析器
      */
     public static final Registry<ColorResolver> COLOR_RESOLVER = FabricRegistryBuilder
-            .createSimple(ColorResolver.class, Identifier.of(MOD_ID, "color_resolver"))
+            .createSimple(RegistryKey.<ColorResolver>ofRegistry(Identifier.of(MOD_ID, "color_resolver")))
             .attribute(RegistryAttribute.SYNCED)
             .buildAndRegister();
 
