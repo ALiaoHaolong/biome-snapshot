@@ -6,9 +6,7 @@ import net.minecraft.command.argument.ColumnPosArgumentType;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.world.ChunkTicketType;
 import net.minecraft.server.world.ServerWorld;
-import net.minecraft.text.LiteralText;
-import net.minecraft.text.TranslatableText;
-import net.minecraft.util.Identifier;
+import net.minecraft.text.Text;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.ChunkSectionPos;
 import net.minecraft.util.math.ColumnPos;
@@ -16,10 +14,9 @@ import net.minecraft.world.chunk.ChunkStatus;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
-import pers.liaohaolong.biomesnapshot.BiomeSnapshotRegistry;
 import pers.liaohaolong.biomesnapshot.color.resolver.ColorResolverWrapper;
-import pers.liaohaolong.biomesnapshot.command.argument.EnumArgumentType;
 import pers.liaohaolong.biomesnapshot.command.argument.ColorResolverEnum;
+import pers.liaohaolong.biomesnapshot.command.argument.ColorResolverArgumentType;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -40,7 +37,7 @@ public class BiomeSnapshotCommand implements Command<ServerCommandSource> {
     @Override
     public int run(CommandContext<ServerCommandSource> context) {
         // 发送提示
-        context.getSource().sendFeedback(new TranslatableText("command.biome-snapshot.start"), false);
+        context.getSource().sendFeedback(Text.translatable("command.biome-snapshot.start"), false);
 
         // 设置文件名与路径
         String fileName = getCurrentTimestamp() + ".png";
@@ -49,33 +46,33 @@ public class BiomeSnapshotCommand implements Command<ServerCommandSource> {
         File file = new File(directory, fileName);
 
         // 获取颜色解析器枚举值
-        ColorResolverEnum colorResolverEnum = EnumArgumentType.getEnum(context, "colorResolver", ColorResolverEnum.class);
+        ColorResolverEnum colorResolverEnum = ColorResolverArgumentType.getColorResolverEnum(context, "colorResolver");
         // 获取起始坐标
         ColumnPos pos1 = ColumnPosArgumentType.getColumnPos(context, "from");
         // 获取结束坐标
         ColumnPos pos2 = ColumnPosArgumentType.getColumnPos(context, "to");
 
         // 规格化起始坐标
-        ColumnPos startPos = new ColumnPos(Math.min(pos1.x, pos2.x),  Math.min(pos1.z, pos2.z));
+        ColumnPos startPos = new ColumnPos(Math.min(pos1.x(), pos2.x()),  Math.min(pos1.z(), pos2.z()));
         // 规格化结束坐标
-        ColumnPos endPos = new ColumnPos(Math.max(pos1.x, pos2.x), Math.max(pos1.z, pos2.z));
+        ColumnPos endPos = new ColumnPos(Math.max(pos1.x(), pos2.x()), Math.max(pos1.z(), pos2.z()));
 
         // 初始化图片
-        int width = endPos.x - startPos.x + 1;
-        int height = endPos.z - startPos.z + 1;
+        int width = endPos.x() - startPos.x() + 1;
+        int height = endPos.z() - startPos.z() + 1;
         BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
 
         // 颜色解析
         ColorResolverWrapper colorResolverWrapper = new ColorResolverWrapper();
-        colorResolverWrapper.setColorResolver(BiomeSnapshotRegistry.COLOR_RESOLVER.get(new Identifier(MOD_ID, colorResolverEnum.name().toLowerCase())));
+        colorResolverWrapper.setColorResolver(colorResolverEnum.getColorResolver());
 
         // ------------------------------ 区块缓存命中优化 ------------------------------
         // 区块起始坐标
-        int startChunkX = ChunkSectionPos.getSectionCoord(startPos.x);
-        int startChunkZ = ChunkSectionPos.getSectionCoord(startPos.z);
+        int startChunkX = ChunkSectionPos.getSectionCoord(startPos.x());
+        int startChunkZ = ChunkSectionPos.getSectionCoord(startPos.z());
         // 区块结束坐标
-        int endChunkX = ChunkSectionPos.getSectionCoord(endPos.x);
-        int endChunkZ = ChunkSectionPos.getSectionCoord(endPos.z);
+        int endChunkX = ChunkSectionPos.getSectionCoord(endPos.x());
+        int endChunkZ = ChunkSectionPos.getSectionCoord(endPos.z());
         // 局部变量优化
         int chunkX, chunkZ;
         int endX, endZ;
@@ -100,12 +97,12 @@ public class BiomeSnapshotCommand implements Command<ServerCommandSource> {
         for (chunkX = startChunkX; chunkX <= endChunkX; chunkX++) {
             for (chunkZ = startChunkZ; chunkZ <= endChunkZ; chunkZ++) {
                 // 获取区块内的起始坐标和结束坐标，并遍历
-                endX = Math.min(ChunkSectionPos.getBlockCoord(chunkX) | 0xF, endPos.x);
-                endZ = Math.min(ChunkSectionPos.getBlockCoord(chunkZ) | 0xF, endPos.z);
-                for (x = Math.max(ChunkSectionPos.getBlockCoord(chunkX), startPos.x); x <= endX; x++) {
-                    for (z = Math.max(ChunkSectionPos.getBlockCoord(chunkZ), startPos.z); z <= endZ; z++) {
+                endX = Math.min(ChunkSectionPos.getBlockCoord(chunkX) | 0xF, endPos.x());
+                endZ = Math.min(ChunkSectionPos.getBlockCoord(chunkZ) | 0xF, endPos.z());
+                for (x = Math.max(ChunkSectionPos.getBlockCoord(chunkX), startPos.x()); x <= endX; x++) {
+                    for (z = Math.max(ChunkSectionPos.getBlockCoord(chunkZ), startPos.z()); z <= endZ; z++) {
                         // 获取并设置颜色
-                        image.setRGB(x - startPos.x, z - startPos.z, colorResolverWrapper.getColor(world, x, z));
+                        image.setRGB(x - startPos.x(), z - startPos.z(), colorResolverWrapper.getColor(world, x, z));
                     }
                 }
 
@@ -116,7 +113,7 @@ public class BiomeSnapshotCommand implements Command<ServerCommandSource> {
                 if (currentTime - lastTime > 5000) {
                     lastTime = currentTime;
                     currentPercent = (int) Math.ceil((double) chunkCount / totalCountOfChunk * 100) - 1;
-                    context.getSource().sendFeedback(new LiteralText(currentPercent + "% chunk:" + chunkCount + "/" + totalCountOfChunk), false);
+                    context.getSource().sendFeedback(Text.literal(currentPercent + "% chunk:" + chunkCount + "/" + totalCountOfChunk), false);
                 }
 
                 // 区块回收优化
@@ -126,9 +123,9 @@ public class BiomeSnapshotCommand implements Command<ServerCommandSource> {
                     world.getChunkManager().threadedAnvilChunkStorage.getTicketManager().removeTicketWithLevel(ChunkTicketType.UNKNOWN, chunkPos, 33 + ChunkStatus.getDistanceFromFull(ChunkStatus.NOISE), chunkPos);
                     // 定期卸载区块
                     if (chunkCount % 1000 == 0) {
-                        context.getSource().sendFeedback(new TranslatableText("command.biome-snapshot.savingChunks"), false);
+                        context.getSource().sendFeedback(Text.translatable("command.biome-snapshot.savingChunks"), false);
                         world.getChunkManager().save(true);
-                        context.getSource().sendFeedback(new TranslatableText("command.biome-snapshot.savingDone"), false);
+                        context.getSource().sendFeedback(Text.translatable("command.biome-snapshot.savingDone"), false);
                     }
                 }
             }
@@ -136,7 +133,7 @@ public class BiomeSnapshotCommand implements Command<ServerCommandSource> {
 
         // 保存
         try {
-            context.getSource().sendFeedback(new TranslatableText("command.biome-snapshot.savingImage"), false);
+            context.getSource().sendFeedback(Text.translatable("command.biome-snapshot.savingImage"), false);
             // 检查文件夹
             if (!directory.exists() && !directory.mkdirs())
                 throw new IOException("Failed to create directory");
@@ -145,12 +142,12 @@ public class BiomeSnapshotCommand implements Command<ServerCommandSource> {
         } catch (Exception e) {
             LOGGER.error("Failed to save biome snapshot image", e);
             // 保存失败
-            context.getSource().sendFeedback(new TranslatableText("command.biome-snapshot.fail"), false);
+            context.getSource().sendFeedback(Text.translatable("command.biome-snapshot.fail"), false);
             return 0;
         }
 
         // 成功
-        context.getSource().sendFeedback(new TranslatableText("command.biome-snapshot.success", file.getName()), false);
+        context.getSource().sendFeedback(Text.translatable("command.biome-snapshot.success", file.getName()), false);
         return 1;
     }
 
