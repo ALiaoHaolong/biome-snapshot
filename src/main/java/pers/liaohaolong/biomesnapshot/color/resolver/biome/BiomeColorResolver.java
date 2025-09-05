@@ -165,4 +165,8 @@ public class BiomeColorResolver extends AbstractBiomeColorResolver {
         source.sendFeedback(new TranslatableText("command.biome-snapshot.unknownBiomeList", unknownBiomeSet.stream().map(Identifier::toString).collect(Collectors.joining(", "))), false);
     }
 
+    public HashMap<Identifier, Integer> getBiomeColorMap() {
+        return biomeColorMap;
+    }
+
 }
