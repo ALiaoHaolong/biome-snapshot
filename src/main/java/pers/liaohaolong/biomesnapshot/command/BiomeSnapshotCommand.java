@@ -4,6 +4,8 @@ import com.mojang.brigadier.Command;
 import com.mojang.brigadier.context.CommandContext;
 import net.minecraft.command.argument.ColumnPosArgumentType;
 import net.minecraft.server.command.ServerCommandSource;
+import net.minecraft.server.world.ChunkLevelType;
+import net.minecraft.server.world.ChunkLevels;
 import net.minecraft.server.world.ChunkTicketType;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
@@ -122,7 +124,7 @@ public class BiomeSnapshotCommand implements Command<ServerCommandSource> {
                 if (enableChunkOptimization) {
                     // 删除区块票据
                     ChunkPos chunkPos = new ChunkPos(chunkX, chunkZ);
-                    world.getChunkManager().threadedAnvilChunkStorage.getTicketManager().removeTicketWithLevel(ChunkTicketType.UNKNOWN, chunkPos, 33 + ChunkStatus.getDistanceFromFull(ChunkStatus.NOISE), chunkPos);
+                    world.getChunkManager().removeTicket(ChunkTicketType.UNKNOWN, chunkPos, ChunkLevels.getLevelFromType(ChunkLevelType.FULL) - ChunkLevels.getLevelFromStatus(ChunkStatus.NOISE), chunkPos);
                     // 定期卸载区块
                     if (chunkCount % 1000 == 0) {
                         context.getSource().sendFeedback(() -> Text.translatable("command.biome-snapshot.savingChunks"), false);
