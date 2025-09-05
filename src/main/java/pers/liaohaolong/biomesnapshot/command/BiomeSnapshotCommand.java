@@ -125,6 +125,17 @@ public class BiomeSnapshotCommand implements Command<ServerCommandSource> {
                     if (chunkCount % 1000 == 0) {
                         context.getSource().sendFeedback(Text.translatable("command.biome-snapshot.savingChunks"), false);
                         world.getChunkManager().save(true);
+                        // 可选优化
+                        // 通过debug可知，1.19.3版本中，在执行此命令开始时，world.getServer().tasks为空，
+                        // 在命令执行时，区块生成任务的某个阶段会向tasks发送一个或若干个延迟任务（该任务包含一个对ProtoChunk的引用）。
+                        // 在1.19.3中，这个引用即使达到万余个，造成的内存泄漏量也不是很大（综合泄露约500MB）。
+                        // 因此如果不在这里将定期任务清理掉，所有加载过的ProtoChunk将无法在内存中回收，
+                        // 导致在绘制大图时，有潜在的OutOfMemory崩溃问题。
+                        // 正常来说，应该获取tasks后，尝试对其中的延迟任务进行精准清理
+                        // （通过debug可知，除了本线程，还有其他任务被放置进来，比如C2S的网络任务等），
+                        // 但在单人模式下，直接这样全部清空目前看好像也没问题
+                        while (world.getServer().getTaskCount() > 0)
+                            world.getServer().runTask();
                         context.getSource().sendFeedback(Text.translatable("command.biome-snapshot.savingDone"), false);
                     }
                 }
