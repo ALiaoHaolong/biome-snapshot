@@ -1,7 +1,9 @@
 package pers.liaohaolong.biomesnapshot.color.resolver.biome;
 
+import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.biome.Biome;
@@ -9,8 +11,10 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * <h3>生物群系颜色解析器</h3>
@@ -20,6 +24,8 @@ public class BiomeColorResolver extends AbstractBiomeColorResolver {
     private static final Logger LOGGER = LogManager.getLogger();
 
     private final HashMap<Identifier, Integer> biomeColorMap = new LinkedHashMap<>();
+
+    private final HashSet<Identifier> unknownBiomeSet = new HashSet<>();
 
     public BiomeColorResolver() {
         // 以下生物群系颜色来自 https://github.com/toolbox4minecraft/amidst/wiki/Biome-Color-Table
@@ -129,6 +135,11 @@ public class BiomeColorResolver extends AbstractBiomeColorResolver {
     }
 
     @Override
+    public void prepare(ServerCommandSource source) {
+        unknownBiomeSet.clear();
+    }
+
+    @Override
     protected int getBiomeColor(ServerWorld world, BlockPos pos) {
         Optional<RegistryKey<Biome>> biomeRegistryKey = world.getBiome(pos).getKey();
         if (biomeRegistryKey.isPresent()) {
@@ -137,13 +148,21 @@ public class BiomeColorResolver extends AbstractBiomeColorResolver {
             // 索引颜色
             Integer rgb = biomeColorMap.get(biomeIdentifier);
             if (rgb == null) {
-                LOGGER.warn("无法解析的生物群系: {}", biomeIdentifier.toString());
+                unknownBiomeSet.add(biomeIdentifier);
                 return -1;
             }
             return rgb;
         }
-        LOGGER.warn("异常的生物群系注册状态");
+        LOGGER.error("异常的生物群系注册状态：{}, {}, {}, {}", world.getServer().getVersion(), world.getSeed(), world.getDimension().effects(), pos.toShortString());
         return -1;
+    }
+
+    @Override
+    public void finish(ServerCommandSource source) {
+        if (unknownBiomeSet.isEmpty())
+            return;
+
+        source.sendFeedback(Text.translatable("command.biome-snapshot.unknownBiomeList", unknownBiomeSet.stream().map(Identifier::toString).collect(Collectors.joining(", "))), false);
     }
 
 }

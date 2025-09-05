@@ -6,6 +6,7 @@
   "command.biome-snapshot.savingImage": "保存圖片中...",
   "command.biome-snapshot.success": "已將生物羣系快照保存為%s",
   "command.biome-snapshot.fail": "生物羣系快照保存失敗",
+  "command.biome-snapshot.unknownBiomeList": "未知的生物羣系：%s",
 
   "modmenu.nameTranslation.biome-snapshot": "Biome Snapshot",
   "modmenu.descriptionTranslation.biome-snapshot": "這個模組提供了一個命令，來將指定座標範圍的生物羣系或地形狀況導出為平面圖（需要 4 級管理員權限）。",
