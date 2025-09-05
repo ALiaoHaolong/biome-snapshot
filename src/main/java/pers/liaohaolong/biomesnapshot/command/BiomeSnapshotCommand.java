@@ -94,6 +94,7 @@ public class BiomeSnapshotCommand implements Command<ServerCommandSource> {
         // 绘制生物群系图片
         ServerWorld world = context.getSource().getWorld();
         // 遍历区块
+        colorResolverWrapper.prepare(context.getSource());
         for (chunkX = startChunkX; chunkX <= endChunkX; chunkX++) {
             for (chunkZ = startChunkZ; chunkZ <= endChunkZ; chunkZ++) {
                 // 获取区块内的起始坐标和结束坐标，并遍历
@@ -142,6 +143,7 @@ public class BiomeSnapshotCommand implements Command<ServerCommandSource> {
                 }
             }
         }
+        colorResolverWrapper.finish(context.getSource());
 
         // 保存
         try {
