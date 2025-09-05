@@ -37,7 +37,7 @@ public class BiomeSnapshotCommand implements Command<ServerCommandSource> {
     @Override
     public int run(CommandContext<ServerCommandSource> context) {
         // 发送提示
-        context.getSource().sendFeedback(Text.translatable("command.biome-snapshot.start"), false);
+        context.getSource().sendFeedback(() -> Text.translatable("command.biome-snapshot.start"), false);
 
         // 设置文件名与路径
         String fileName = getCurrentTimestamp() + ".png";
@@ -113,7 +113,9 @@ public class BiomeSnapshotCommand implements Command<ServerCommandSource> {
                 if (currentTime - lastTime > 5000) {
                     lastTime = currentTime;
                     currentPercent = (int) Math.ceil((double) chunkCount / totalCountOfChunk * 100) - 1;
-                    context.getSource().sendFeedback(Text.literal(currentPercent + "% chunk:" + chunkCount + "/" + totalCountOfChunk), false);
+                    int finalCurrentPercent = currentPercent;
+                    int finalChunkCount = chunkCount;
+                    context.getSource().sendFeedback(() -> Text.literal(finalCurrentPercent + "% chunk:" + finalChunkCount + "/" + totalCountOfChunk), false);
                 }
 
                 // 区块回收优化
@@ -123,9 +125,8 @@ public class BiomeSnapshotCommand implements Command<ServerCommandSource> {
                     world.getChunkManager().threadedAnvilChunkStorage.getTicketManager().removeTicketWithLevel(ChunkTicketType.UNKNOWN, chunkPos, 33 + ChunkStatus.getDistanceFromFull(ChunkStatus.NOISE), chunkPos);
                     // 定期卸载区块
                     if (chunkCount % 1000 == 0) {
-                        context.getSource().sendFeedback(Text.translatable("command.biome-snapshot.savingChunks"), false);
+                        context.getSource().sendFeedback(() -> Text.translatable("command.biome-snapshot.savingChunks"), false);
                         world.getChunkManager().save(true);
-                        // 可选优化
                         // 通过debug可知，1.19.3版本中，在执行此命令开始时，world.getServer().tasks为空，
                         // 在命令执行时，区块生成任务的某个阶段会向tasks发送一个或若干个延迟任务（该任务包含一个对ProtoChunk的引用）。
                         // 在1.19.3中，这个引用即使达到万余个，造成的内存泄漏量也不是很大（综合泄露约500MB）。
@@ -136,7 +137,7 @@ public class BiomeSnapshotCommand implements Command<ServerCommandSource> {
                         // 但在单人模式下，直接这样全部清空目前看好像也没问题
                         while (world.getServer().getTaskCount() > 0)
                             world.getServer().runTask();
-                        context.getSource().sendFeedback(Text.translatable("command.biome-snapshot.savingDone"), false);
+                        context.getSource().sendFeedback(() -> Text.translatable("command.biome-snapshot.savingDone"), false);
                     }
                 }
             }
@@ -144,7 +145,7 @@ public class BiomeSnapshotCommand implements Command<ServerCommandSource> {
 
         // 保存
         try {
-            context.getSource().sendFeedback(Text.translatable("command.biome-snapshot.savingImage"), false);
+            context.getSource().sendFeedback(() -> Text.translatable("command.biome-snapshot.savingImage"), false);
             // 检查文件夹
             if (!directory.exists() && !directory.mkdirs())
                 throw new IOException("Failed to create directory");
@@ -153,12 +154,12 @@ public class BiomeSnapshotCommand implements Command<ServerCommandSource> {
         } catch (Exception e) {
             LOGGER.error("Failed to save biome snapshot image", e);
             // 保存失败
-            context.getSource().sendFeedback(Text.translatable("command.biome-snapshot.fail"), false);
+            context.getSource().sendFeedback(() -> Text.translatable("command.biome-snapshot.fail"), false);
             return 0;
         }
 
         // 成功
-        context.getSource().sendFeedback(Text.translatable("command.biome-snapshot.success", file.getName()), false);
+        context.getSource().sendFeedback(() -> Text.translatable("command.biome-snapshot.success", file.getName()), false);
         return 1;
     }
 
