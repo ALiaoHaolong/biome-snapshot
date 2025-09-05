@@ -2,6 +2,7 @@ package pers.liaohaolong.biomesnapshot.command;
 
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.context.CommandContext;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.command.argument.ColumnPosArgumentType;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.world.ChunkTicketType;
@@ -42,7 +43,7 @@ public class BiomeSnapshotCommand implements Command<ServerCommandSource> {
         // 设置文件名与路径
         String fileName = getCurrentTimestamp() + ".png";
         String levelName = context.getSource().getServer().getSaveProperties().getLevelName();
-        File directory = new File("config/" + MOD_ID + "/" + levelName);
+        File directory = FabricLoader.getInstance().getConfigDir().resolve(MOD_ID).resolve(levelName).toFile();
         File file = new File(directory, fileName);
 
         // 获取颜色解析器枚举值
