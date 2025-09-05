@@ -1,12 +1,15 @@
 package pers.liaohaolong.biomesnapshot;
 
 import com.mojang.brigadier.Command;
+import com.mojang.brigadier.arguments.IntegerArgumentType;
+import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.minecraft.command.argument.ColumnPosArgumentType;
 import net.minecraft.server.command.ServerCommandSource;
 import pers.liaohaolong.biomesnapshot.command.BiomeSnapshotCommand;
+import pers.liaohaolong.biomesnapshot.command.BiomeSnapshotConfigCommand;
 import pers.liaohaolong.biomesnapshot.command.argument.ColorResolverArgumentType;
 
 import static net.minecraft.server.command.CommandManager.argument;
@@ -30,6 +33,7 @@ public class BiomeSnapshot implements ModInitializer {
     public static final String MOD_ID = "biome-snapshot";
 
     private static final Command<ServerCommandSource> COMMAND = new BiomeSnapshotCommand();
+    private static final BiomeSnapshotConfigCommand CONFIG_COMMAND = new BiomeSnapshotConfigCommand();
 
     @Override
     public void onInitialize() {
@@ -49,6 +53,38 @@ public class BiomeSnapshot implements ModInitializer {
                                 // 结束坐标
                                 .then(argument("to", ColumnPosArgumentType.columnPos())
                                         .executes(COMMAND)
+                                )
+                        )
+                )
+                // 配置
+                .then(literal("config")
+                        // BIOME_COLOR_RESOLVER
+                        .then(literal("BIOME_COLOR_RESOLVER")
+                                // 设置
+                                .then(literal("set")
+                                        .then(argument("namespace", StringArgumentType.word())
+                                                .then(argument("path", StringArgumentType.word())
+                                                        .then(argument("color", IntegerArgumentType.integer(0, 16777215)) // [0, 0xFFFFFF]
+                                                                .executes(CONFIG_COMMAND::set)
+                                                        )
+                                                )
+                                        )
+                                )
+                                // 删除
+                                .then(literal("remove")
+                                        .then(argument("namespace", StringArgumentType.word())
+                                                .then(argument("path", StringArgumentType.word())
+                                                        .executes(CONFIG_COMMAND::remove)
+                                                )
+                                        )
+                                )
+                                // 查询
+                                .then(literal("get")
+                                        .then(argument("namespace", StringArgumentType.word())
+                                                .then(argument("path", StringArgumentType.word())
+                                                        .executes(CONFIG_COMMAND::get)
+                                                )
+                                        )
                                 )
                         )
                 );

@@ -8,6 +8,10 @@
   "command.biome-snapshot.fail": "生物群系快照保存失败",
   "command.biome-snapshot.unknownBiomeList": "未知的生物群系：%s",
 
+  "command.biome-snapshot.config.biome_color_resolver.set.success": "%s 的颜色已设置为 %s（0x%s）",
+  "command.biome-snapshot.config.biome_color_resolver.remove.success": "%s 的颜色已删除",
+  "command.biome-snapshot.config.biome_color_resolver.get": "%s 的颜色是 %s（0x%s）",
+
   "modmenu.nameTranslation.biome-snapshot": "Biome Snapshot",
   "modmenu.descriptionTranslation.biome-snapshot": "这个模组提供了一个命令，来将指定坐标范围的生物群系或地形状况导出为平面图（需要 4 级管理员权限）。",
 
