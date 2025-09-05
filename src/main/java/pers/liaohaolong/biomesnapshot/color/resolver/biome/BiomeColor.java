@@ -107,9 +107,12 @@ public enum BiomeColor {
     DRIPSTONE_CAVES(0xC1A58F),
     LUSH_CAVES(0xDF9634),
 
-    // 以下生物群系是1.18.2（不含）到1.19（含）之间新增的
+    // 以下生物群系是1.19新增的
     DEEP_DARK(0x000000),
-    MANGROVE_SWAMP(0x24C48E)
+    MANGROVE_SWAMP(0x24C48E),
+
+    // 以下生物群系是1.19.4新增的
+    CHERRY_GROVE(0xF7B9DC),
     ;
 
     private final int color;
