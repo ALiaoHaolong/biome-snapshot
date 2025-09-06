@@ -21,42 +21,37 @@ public enum ColorResolverEnum implements StringIdentifiable {
      *
      * @see pers.liaohaolong.biomesnapshot.color.resolver.biome.BiomeColorResolver
      */
-    BIOME("BIOME", ColorResolvers.BIOME_COLOR_RESOLVER),
+    BIOME("biome", ColorResolvers.BIOME_COLOR_RESOLVER),
 
     /**
      * 大陆海洋生物群系颜色解析器
      *
      * @see pers.liaohaolong.biomesnapshot.color.resolver.biome.MainlandOceanBiomeColorResolver
      */
-    MAINLAND_OCEAN_BIOME("MAINLAND_OCEAN_BIOME", ColorResolvers.MAINLAND_OCEAN_BIOME_COLOR_RESOLVER),
+    MAINLAND_OCEAN_BIOME("mainland_ocean_biome", ColorResolvers.MAINLAND_OCEAN_BIOME_COLOR_RESOLVER),
 
     /**
      * 大陆河流海洋生物群系颜色解析器
      *
      * @see pers.liaohaolong.biomesnapshot.color.resolver.biome.MainlandRiverOceanBiomeColorResolver
      */
-    MAINLAND_RIVER_OCEAN_BIOME("MAINLAND_RIVER_OCEAN_BIOME", ColorResolvers.MAINLAND_RIVER_OCEAN_BIOME_COLOR_RESOLVER),
+    MAINLAND_RIVER_OCEAN_BIOME("mainland_river_ocean_biome", ColorResolvers.MAINLAND_RIVER_OCEAN_BIOME_COLOR_RESOLVER),
 
     /**
      * 真实海岸线颜色解析器
      *
      * @see RealCoastlineColorResolver
      */
-    REAL_COASTLINE("REAL_COASTLINE", ColorResolvers.REAL_COASTLINE_COLOR_RESOLVER),
+    REAL_COASTLINE("real_coastline", ColorResolvers.REAL_COASTLINE_COLOR_RESOLVER),
     ;
 
     public static final com.mojang.serialization.Codec<ColorResolverEnum> CODEC = StringIdentifiable.createCodec(ColorResolverEnum::values);
-    private final String name;
+    private final String id;
     private final ColorResolver colorResolver;
 
-    ColorResolverEnum(final String name, final ColorResolver colorResolver) {
-        this.name = name;
+    ColorResolverEnum(final String id, final ColorResolver colorResolver) {
+        this.id = id;
         this.colorResolver = colorResolver;
-    }
-
-    @SuppressWarnings("unused")
-    public String getName() {
-        return this.name;
     }
 
     public ColorResolver getColorResolver() {
@@ -65,7 +60,7 @@ public enum ColorResolverEnum implements StringIdentifiable {
 
     @Override
     public String asString() {
-        return this.name;
+        return this.id;
     }
 
 }
