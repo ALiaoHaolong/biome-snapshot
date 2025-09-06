@@ -9,17 +9,48 @@ import net.minecraft.world.biome.Biome;
  */
 public class MainlandRiverOceanBiomeColorResolver extends AbstractBiomeColorResolver {
 
+    public static final int DEFAULT_MAINLAND_COLOR = 0x8DB360;
+    public static final int DEFAULT_RIVER_COLOR = 0x0000FF;
+    public static final int DEFAULT_OCEAN_COLOR = 0x000070;
+
+    private int mainlandColor = DEFAULT_MAINLAND_COLOR;
+    private int riverColor = DEFAULT_RIVER_COLOR;
+    private int oceanColor = DEFAULT_OCEAN_COLOR;
+
     @Override
     protected int getBiomeColor(ServerWorld world, BlockPos pos) {
         // 获取生物群系的分类名称
         Biome.Category category = Biome.getCategory(world.getBiome(pos));
+        // 返回分类颜色
         return switch (category) {
-            case OCEAN -> 0x000070;
-            case RIVER -> 0x0000FF;
-            case NETHER -> 0xBF3B3B;
-            case THEEND -> 0x8080FF;
-            default -> 0x8DB360;
+            case OCEAN -> oceanColor;
+            case RIVER -> riverColor;
+            default -> mainlandColor;
         };
+    }
+
+    public int getMainlandColor() {
+        return mainlandColor;
+    }
+
+    public void setMainlandColor(int mainlandColor) {
+        this.mainlandColor = mainlandColor;
+    }
+
+    public int getRiverColor() {
+        return riverColor;
+    }
+
+    public void setRiverColor(int riverColor) {
+        this.riverColor = riverColor;
+    }
+
+    public int getOceanColor() {
+        return oceanColor;
+    }
+
+    public void setOceanColor(int oceanColor) {
+        this.oceanColor = oceanColor;
     }
 
 }
