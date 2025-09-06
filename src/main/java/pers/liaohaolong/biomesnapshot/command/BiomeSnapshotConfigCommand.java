@@ -22,7 +22,7 @@ public class BiomeSnapshotConfigCommand {
     }
 
     /**
-     * <h3>/biome-snapshot-config BIOME 命令</h3>
+     * <h3>/biome-snapshot-config biome 命令</h3>
      */
     public static class BiomeCommand extends BiomeSnapshotConfigCommand {
 
@@ -62,7 +62,7 @@ public class BiomeSnapshotConfigCommand {
     }
 
     /**
-     * <h3>/biome-snapshot-config MAINLAND_OCEAN_BIOME 命令</h3>
+     * <h3>/biome-snapshot-config mainland_ocean_biome 命令</h3>
      */
     public static class MainlandOceanBiomeCommand extends BiomeSnapshotConfigCommand {
 
@@ -99,7 +99,7 @@ public class BiomeSnapshotConfigCommand {
     }
 
     /**
-     * <h3>/biome-snapshot-config MAINLAND_RIVER_OCEAN_BIOME 命令</h3>
+     * <h3>/biome-snapshot-config mainland_river_ocean_biome 命令</h3>
      */
     public static class MainlandRiverOceanBiomeCommand extends BiomeSnapshotConfigCommand {
 
