@@ -23,7 +23,7 @@
   "command.biome-snapshot.config.mainland_river_ocean_biome_color_resolver.get.ocean": "[mainland_river_ocean_biome] The color of ocean is %s (0x%s)",
 
   "modmenu.nameTranslation.biome-snapshot": "Biome Snapshot",
-  "modmenu.descriptionTranslation.biome-snapshot": "This mod provides a command to export the biome or terrain status of a specified coordinate range as a flat map (requires level 4 admin privileges).",
+  "modmenu.descriptionTranslation.biome-snapshot": "This mod provides some commands to export the biome or terrain status of a specified coordinate range as a flat map (requires permission level of 4).",
 
   "biome-snapshot.mcmod": "MC 百科"
 }
