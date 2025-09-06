@@ -15,6 +15,12 @@ import net.minecraft.world.biome.Biome;
  */
 public class MainlandOceanBiomeColorResolver extends AbstractBiomeColorResolver {
 
+    public static final int DEFAULT_MAINLAND_COLOR = 0x8DB360;
+    public static final int DEFAULT_OCEAN_COLOR = 0x000070;
+
+    private int mainlandColor = DEFAULT_MAINLAND_COLOR;
+    private int oceanColor = DEFAULT_OCEAN_COLOR;
+
     @Override
     protected int getBiomeColor(ServerWorld world, BlockPos pos) {
         // 获取生物群系
@@ -22,14 +28,26 @@ public class MainlandOceanBiomeColorResolver extends AbstractBiomeColorResolver 
         // 判断标签
         if (biomeRegistryEntry.isIn(BiomeTags.IS_OVERWORLD)) {
             if (biomeRegistryEntry.isIn(BiomeTags.IS_OCEAN))
-                return 0x000070;
-            return 0x8DB360;
+                return oceanColor;
+            return mainlandColor;
         }
-        if (biomeRegistryEntry.isIn(BiomeTags.IS_NETHER))
-            return 0xBF3B3B;
-        if (biomeRegistryEntry.isIn(BiomeTags.IS_END))
-            return 0x8080FF;
         return -1;
+    }
+
+    public int getMainlandColor() {
+        return mainlandColor;
+    }
+
+    public void setMainlandColor(int mainlandColor) {
+        this.mainlandColor = mainlandColor;
+    }
+
+    public int getOceanColor() {
+        return oceanColor;
+    }
+
+    public void setOceanColor(int oceanColor) {
+        this.oceanColor = oceanColor;
     }
 
 }
