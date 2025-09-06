@@ -23,7 +23,7 @@
   "command.biome-snapshot.config.mainland_river_ocean_biome_color_resolver.get.ocean": "[mainland_river_ocean_biome] 海洋的顏色是 %s（0x%s）",
 
   "modmenu.nameTranslation.biome-snapshot": "Biome Snapshot",
-  "modmenu.descriptionTranslation.biome-snapshot": "這個模組提供了一個命令，來將指定座標範圍的生物羣系或地形狀況導出為平面圖（需要 4 級管理員權限）。",
+  "modmenu.descriptionTranslation.biome-snapshot": "這個模組提供了一些命令，來將指定座標範圍的生物羣系或地形狀況導出為平面圖（需要 4 級權限等級）。",
 
   "biome-snapshot.mcmod": "MC 百科"
 }
