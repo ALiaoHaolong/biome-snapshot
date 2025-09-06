@@ -57,10 +57,15 @@ public class EnumArgumentType<E extends Enum<E>> implements ArgumentType<E> {
 
     @Override
     public <S> CompletableFuture<Suggestions> listSuggestions(CommandContext<S> context, SuggestionsBuilder builder) {
+        // 获取当前输入
         String input = builder.getRemaining().toLowerCase();
+        // 遍历枚举值
         for (E enumConstant : enumClass.getEnumConstants()) {
+            // 获取枚举值的名称
             String name = enumConstant.name().toLowerCase();
+            // 判断当前输入的是否是枚举值的前缀
             if (name.startsWith(input)) {
+                // 添加建议
                 builder.suggest(name);
             }
         }
