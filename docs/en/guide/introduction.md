@@ -179,7 +179,7 @@ Based on biomes, each biome has its own unique color.
 
 Example: `/biome-snapshot biome -5000 -5000 0 0`
 
-![](/Biome.png)
+![](/images/Biome.png)
 
 ### Mainland Ocean Biome Color Resolver
 
@@ -189,7 +189,7 @@ Based on biomes, all biomes are divided into two categories: mainland and ocean.
 
 Example: `/biome-snapshot mainland_ocean_biome -5000 -5000 0 0`
 
-![](/MainlandOceanBiome.png)
+![](/images/MainlandOceanBiome.png)
 
 ### Mainland River Ocean Biome Color Resolver
 
@@ -199,7 +199,7 @@ Based on biomes, all biomes are divided into three categories: mainland, river, 
 
 Example: `/biome-snapshot mainland_river_ocean_biome -5000 -5000 0 0`
 
-![](/MainlandRiverOceanBiome.png)
+![](/images/MainlandRiverOceanBiome.png)
 
 ### Real Coastline Color Resolver
 
@@ -218,7 +218,7 @@ In addition, subsequent stages such as terrain carving (CARVERS) may still sligh
 
 Example: `/biome-snapshot real_coastline -5000 -5000 0 0`
 
-![](/RealCoastline.png)
+![](/images/RealCoastline.png)
 
 ## For mod and datapack developers
 

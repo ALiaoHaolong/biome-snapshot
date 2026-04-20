@@ -179,7 +179,7 @@ ID：`biome`。
 
 示例：`/biome-snapshot biome -5000 -5000 0 0`
 
-![](/Biome.png)
+![](/images/Biome.png)
 
 ### 大陆海洋生物群系颜色解析器
 
@@ -189,7 +189,7 @@ ID：`mainland_ocean_biome`。
 
 示例：`/biome-snapshot mainland_ocean_biome -5000 -5000 0 0`
 
-![](/MainlandOceanBiome.png)
+![](/images/MainlandOceanBiome.png)
 
 ### 大陆河流海洋生物群系颜色解析器
 
@@ -199,7 +199,7 @@ ID：`mainland_river_ocean_biome`。
 
 示例：`/biome-snapshot mainland_river_ocean_biome -5000 -5000 0 0`
 
-![](/MainlandRiverOceanBiome.png)
+![](/images/MainlandRiverOceanBiome.png)
 
 ### 真实的海岸线颜色解析器
 
@@ -218,7 +218,7 @@ ID：`real_coastline`。
 
 示例：`/biome-snapshot real_coastline -5000 -5000 0 0`
 
-![](/RealCoastline.png)
+![](/images/RealCoastline.png)
 
 ## 适用于模组和数据包开发者
 
