@@ -27,7 +27,7 @@ const vitePressOptions = {
     logo: '/icon.png',
     socialLinks: [
       { icon: 'modrinth', link: 'https://modrinth.com/mod/biome-snapshot' },
-      // { icon: 'curseforge', link: 'https://www.curseforge.com/minecraft/mc-mods/biome-snapshot' },
+      { icon: 'curseforge', link: 'https://www.curseforge.com/minecraft/mc-mods/biome-snapshot' },
       // { icon: {}, link: 'https://www.mcmod.cn/class/20861.html' },
       { icon: 'github', link: 'https://github.com/aliaohaolong/biome-snapshot' },
     ],
@@ -67,7 +67,7 @@ const vitePressI18nOptions = {
           text: 'Downloads',
           items: [
             { text: 'Modrinth', link: 'https://modrinth.com/mod/biome-snapshot/versions'},
-            // { text: 'CurseForge', link: 'https://www.curseforge.com/minecraft/mc-mods/biome-snapshot/files/all' },
+            { text: 'CurseForge', link: 'https://www.curseforge.com/minecraft/mc-mods/biome-snapshot/files/all' },
           ]
         },
         { text: 'Changelogs', link: '/changelogs/1.0.0', activeMatch: '/changelogs/' },
@@ -87,7 +87,7 @@ const vitePressI18nOptions = {
           text: '下载',
           items: [
             { text: 'Modrinth', link: 'https://modrinth.com/mod/biome-snapshot/versions'},
-            // { text: 'CurseForge', link: 'https://www.curseforge.com/minecraft/mc-mods/biome-snapshot/files/all' },
+            { text: 'CurseForge', link: 'https://www.curseforge.com/minecraft/mc-mods/biome-snapshot/files/all' },
           ]
         },
         { text: '更新日志', link: '/zh/changelogs/1.0.0', activeMatch: '/changelogs/' },

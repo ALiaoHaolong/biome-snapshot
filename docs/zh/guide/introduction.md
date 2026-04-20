@@ -13,7 +13,7 @@ order: 0
 ![Minecraft Support](https://img.shields.io/badge/SUPPORT_FOR_MC-1.18_~_1.21.4-11304B?style=for-the-badge&labelColor=D0D5DA)
 
 [![Modrinth Downloads](https://img.shields.io/modrinth/dt/UwMKwtO9?style=flat-square&logo=modrinth&labelColor=D0D5DA&color=00af5c)](https://modrinth.com/mod/biome-snapshot)
-[![CurseForge Downloads](https://img.shields.io/curseforge/dt/0000000?style=flat-square&logo=curseforge&labelColor=D0D5DA&color=F16436)](https://www.curseforge.com/minecraft/mc-mods/biome-snapshot)
+[![CurseForge Downloads](https://img.shields.io/curseforge/dt/1519771?style=flat-square&logo=curseforge&labelColor=D0D5DA&color=F16436)](https://www.curseforge.com/minecraft/mc-mods/biome-snapshot)
 [![Modrinth Version](https://img.shields.io/modrinth/v/UwMKwtO9?style=flat-square&logo=github&logoColor=010409&labelColor=D0D5DA&color=010409)](https://github.com/ALiaoHaolong/biome-snapshot)
 
 [![MCMOD](https://img.shields.io/badge/MCMOD-D0D5DA?style=for-the-badge)](https://www.mcmod.cn/class/20861.html)
