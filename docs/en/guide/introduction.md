@@ -225,7 +225,7 @@ Example: `/biome-snapshot real_coastline -5000 -5000 0 0`
 
 Biome Snapshot enables developers or enthusiasts of mods and datapacks to configure default colors for their custom biomes.
 
-Please go to the [Issue](https://gitee.com/AnNight/biome-snapshot/issues) page to submit a request.
+Please go to the [Issue](https://github.com/ALiaoHaolong/biome-snapshot/issues) page to submit a request.
 
 Please provide the mod or datapack home page link, your identity (developer, administrator, contributor, etc.), and a list containing the biome information (namespace, path, and default color).
 

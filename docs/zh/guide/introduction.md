@@ -225,7 +225,7 @@ ID：`real_coastline`。
 
 Biome Snapshot 允许模组和数据包的开发者或爱好者为他们的自定义的生物群系配置默认颜色。
 
-请前往 [Issue](https://gitee.com/AnNight/biome-snapshot/issues) 页面提交一个请求。
+请前往 [Issue](https://github.com/ALiaoHaolong/biome-snapshot/issues) 页面提交一个请求。
 
 请提供模组或数据包的主页链接、您的身份（开发者、管理员、贡献者等等），以及一个包含生物群系信息（命名空间、路径和默认颜色）的列表。
 
