@@ -25,6 +25,7 @@ order: 0
 </div>
 
 ---
+
 This mod provides some commands to export the biome or terrain status of a specified coordinate range as a flat map (requires permission level of 4).
 
 The exported image is saved in `config/biome-snapshot/<levelName>/`.
@@ -232,4 +233,4 @@ I will respond to your request in the issue.
 
 ## License
 
-This project uses <a href="https://github.com/ALiaoHaolong/biome-snapshot/blob/master/LICENSE" target="_blank" rel="noreferrer" class="vp-external-link-icon">Apache License 2.0</a>.
+Licensed under the <a href="https://github.com/ALiaoHaolong/biome-snapshot/blob/master/LICENSE" target="_blank" rel="noreferrer" class="vp-external-link-icon">Apache License 2.0</a>.
