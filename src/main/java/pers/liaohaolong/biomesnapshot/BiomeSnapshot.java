@@ -26,11 +26,6 @@ import static net.minecraft.server.command.CommandManager.literal;
  *
  * <p>这是一个基于Fabric的Minecraft游戏模组，提供了一个命令来将指定坐标范围的生物群系状况导出为平面图。</p>
  *
- * <p>相关链接：
- *     <a href="https://modrinth.com/mod/biome-snapshot">主页</a>
- *     <a href="https://gitee.com/AnNight/biome-snapshot/issues">问题反馈</a>
- * </p>
- *
  * @author 廖浩龙
  */
 public class BiomeSnapshot implements ModInitializer {
