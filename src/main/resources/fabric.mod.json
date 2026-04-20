@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "id": "biome-snapshot",
-  "version": "1.3.0",
+  "version": "${version}",
   "name": "Biome Snapshot",
   "description": "This mod provides a command to export the biome or terrain status of a specified coordinate range as a flat map (requires level 4 admin privileges).",
   "authors": [
@@ -15,9 +15,9 @@
   "contributors": [
   ],
   "contact": {
-    "homepage": "https://modrinth.com/mod/biome-snapshot",
-    "sources": "https://gitee.com/AnNight/biome-snapshot",
-    "issues": "https://gitee.com/AnNight/biome-snapshot/issues"
+    "homepage": "https://aliaohaolong.github.io/biome-snapshot/",
+    "sources": "https://github.com/ALiaoHaolong/biome-snapshot",
+    "issues": "https://github.com/ALiaoHaolong/biome-snapshot/issues"
   },
   "license": "Apache-2.0",
   "icon": "assets/biome-snapshot/icon.png",
@@ -27,10 +27,14 @@
       "pers.liaohaolong.biomesnapshot.BiomeSnapshot"
     ]
   },
+  "mixins": [
+    "biome-snapshot.mixins.json"
+  ],
+  "accessWidener": "biome-snapshot.accesswidener",
   "depends": {
+    "minecraft": ">=${minecraft_version}",
     "fabricloader": ">=${loader_version}",
-    "fabric": "*",
-    "minecraft": ">=${minecraft_version}"
+    "java": ">=17"
   },
   "suggests": {
     "modmenu": "*"
@@ -39,6 +43,7 @@
     "modmenu": {
       "links": {
         "modmenu.modrinth": "https://modrinth.com/mod/biome-snapshot",
+        "modmenu.curseforge": "https://www.curseforge.com/minecraft/mc-mods/biome-snapshot",
         "biome-snapshot.mcmod": "https://www.mcmod.cn/class/20861.html"
       }
     }
