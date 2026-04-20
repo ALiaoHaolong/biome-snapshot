@@ -1,7 +1,7 @@
 <!--suppress HtmlDeprecatedAttribute -->
 <div align="center">
 
-# BiomeSnapshot
+# Biome Snapshot
 
 </div>
 
