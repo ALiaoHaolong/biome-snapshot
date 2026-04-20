@@ -5,9 +5,9 @@ hero:
   name: Biome Snapshot
 #  text: What's in their inventory?
 #  tagline: An admin mod to view and modify any player's inventory in real time. 😇
-#  image:
-#    src: /icon@3x.png
-#    alt: Biome Snapshot
+  image:
+    src: /icon@3x.png
+    alt: Biome Snapshot
 
   actions:
     - theme: brand

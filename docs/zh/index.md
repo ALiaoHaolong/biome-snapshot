@@ -5,9 +5,9 @@ hero:
   name: Biome Snapshot
 #  text: 他们的物品栏里有什么？
 #  tagline: 一款可以实时查看并修改任意玩家的物品栏的管理员模组。😇
-#  image:
-#    src: /icon@3x.png
-#    alt: Biome Snapshot
+  image:
+    src: /icon@3x.png
+    alt: Biome Snapshot
 
   actions:
     - theme: brand
