@@ -1,5 +1,23 @@
-.gradle
-.idea/
+# gradle
+
+.gradle/
 build/
-modrinth/
+out/
+classes/
+
+# idea
+
+.idea/
+*.iml
+*.ipr
+*.iws
+
+# fabric
+
 run/
+
+# vitepress
+
+node_modules/
+docs/.vitepress/dist/
+docs/.vitepress/cache/
