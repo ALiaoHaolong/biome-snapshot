@@ -177,7 +177,7 @@ ID：`biome`。
 
 以生物群系为基础，每个生物群系都有自己独特的颜色。
 
-示例：`/biome-snapshot biome -5000 -5000 5000 5000`
+示例：`/biome-snapshot biome -5000 -5000 0 0`
 
 ![](/Biome.png)
 
@@ -187,7 +187,7 @@ ID：`mainland_ocean_biome`。
 
 以生物群系为基础，将所有生物群系划分为大陆与海洋两类，大陆默认使用平原的颜色表示（翠绿色），海洋默认使用海洋的颜色表示（深蓝色）。
 
-示例：`/biome-snapshot mainland_ocean_biome -5000 -5000 5000 5000`
+示例：`/biome-snapshot mainland_ocean_biome -5000 -5000 0 0`
 
 ![](/MainlandOceanBiome.png)
 
@@ -197,7 +197,7 @@ ID：`mainland_river_ocean_biome`。
 
 以生物群系为基础，将所有生物群系划分为大陆、河流与海洋三类，大陆默认使用平原的颜色表示（翠绿色），河流默认使用河流的颜色表示（蓝色），海洋默认使用海洋的颜色表示（深蓝色）。
 
-示例：`/biome-snapshot mainland_river_ocean_biome -5000 -5000 5000 5000`
+示例：`/biome-snapshot mainland_river_ocean_biome -5000 -5000 0 0`
 
 ![](/MainlandRiverOceanBiome.png)
 
@@ -216,7 +216,7 @@ ID：`real_coastline`。
 
 另外，后续的地形雕刻（CARVERS）等阶段仍可能少量的改变海岸线，但这些改变不大，并且将区块生成到这些后期阶段所需要的时间和空间相比生成到噪声（NOISE）阶段（早期阶段）都大的多，后续可能会为此拆分成两个独立的颜色解析器以供选择。
 
-示例：`/biome-snapshot real_coastline -5000 -5000 5000 5000`
+示例：`/biome-snapshot real_coastline -5000 -5000 0 0`
 
 ![](/RealCoastline.png)
 

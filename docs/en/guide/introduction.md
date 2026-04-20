@@ -177,7 +177,7 @@ ID: `biome`.
 
 Based on biomes, each biome has its own unique color.
 
-Example: `/biome-snapshot biome -5000 -5000 5000 5000`
+Example: `/biome-snapshot biome -5000 -5000 0 0`
 
 ![](/Biome.png)
 
@@ -187,7 +187,7 @@ ID: `mainland_ocean_biome`.
 
 Based on biomes, all biomes are divided into two categories: mainland and ocean. Mainland is represented by the color of plains (green) by default, and ocean is represented by the color of ocean (dark blue) by default.
 
-Example: `/biome-snapshot mainland_ocean_biome -5000 -5000 5000 5000`
+Example: `/biome-snapshot mainland_ocean_biome -5000 -5000 0 0`
 
 ![](/MainlandOceanBiome.png)
 
@@ -197,7 +197,7 @@ ID: `mainland_river_ocean_biome`.
 
 Based on biomes, all biomes are divided into three categories: mainland, river, and ocean. Mainland is represented by the color of plains (green) by default, river is represented by the color of river (blue) by default, and ocean is represented by the color of ocean (dark blue) by default.
 
-Example: `/biome-snapshot mainland_river_ocean_biome -5000 -5000 5000 5000`
+Example: `/biome-snapshot mainland_river_ocean_biome -5000 -5000 0 0`
 
 ![](/MainlandRiverOceanBiome.png)
 
@@ -216,7 +216,7 @@ It should be noted that the NOISE stage is only an early stage of chunk generati
 
 In addition, subsequent stages such as terrain carving (CARVERS) may still slightly change the coastline, but these changes are not significant. Moreover, the time and space required to generate chunks to these later stages are much greater than those required to generate to the NOISE stage (early stage). In the future, this may be split into two independent color resolvers for selection.
 
-Example: `/biome-snapshot real_coastline -5000 -5000 5000 5000`
+Example: `/biome-snapshot real_coastline -5000 -5000 0 0`
 
 ![](/RealCoastline.png)
 
