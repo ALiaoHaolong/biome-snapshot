@@ -16,10 +16,6 @@ classes/
 
 run/
 
-# modrinth
-
-modrinth/
-
 # vitepress
 
 node_modules/
