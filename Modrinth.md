@@ -1,23 +1,23 @@
+<!--suppress HtmlDeprecatedAttribute -->
+<div align="center">
+
 # BiomeSnapshot
 
-![Biome Snapshot Logo](https://cdn.modrinth.com/data/cached_images/eb24e8d3a23b942c5d091e62586395daf85c0e69_0.webp)
+<img src="https://cdn.jsdelivr.net/gh/ALiaoHaolong/biome-snapshot@master/icon.png" alt="Logo" width="128" height="128"/>
 
-Modrinth：  
-[Biome Snapshot - Minecraft Mod](https://modrinth.com/mod/biome-snapshot)
+![Minecraft Support](https://img.shields.io/badge/SUPPORT_FOR_MC-1.18_~_1.21.4-11304B?style=for-the-badge&labelColor=D0D5DA)
 
-Mod 百科:   
-[Biome Snapshot - MC百科|最大的Minecraft中文MOD百科](https://www.mcmod.cn/class/20861.html)
+[![Modrinth Downloads](https://img.shields.io/modrinth/dt/UwMKwtO9?style=flat-square&logo=modrinth&labelColor=D0D5DA&color=00af5c)](https://modrinth.com/mod/biome-snapshot)
+[![CurseForge Downloads](https://img.shields.io/curseforge/dt/0000000?style=flat-square&logo=curseforge&labelColor=D0D5DA&color=F16436)](https://www.curseforge.com/minecraft/mc-mods/biome-snapshot)
+[![Modrinth Version](https://img.shields.io/modrinth/v/UwMKwtO9?style=flat-square&logo=github&logoColor=010409&labelColor=D0D5DA&color=010409)](https://github.com/ALiaoHaolong/biome-snapshot)
 
-Source code:  
-[Gitee.com - 暗夜/Biome Snapshot](https://gitee.com/AnNight/biome-snapshot)
+[![MCMOD](https://img.shields.io/badge/MCMOD-D0D5DA?style=for-the-badge)](https://www.mcmod.cn/class/20861.html)
+[![Homepage](https://img.shields.io/badge/HOMEPAGE-D0D5DA?style=for-the-badge)](https://aliaohaolong.github.io/biome-snapshot)
+[![Issues](https://img.shields.io/badge/ISSUES-D0D5DA?style=for-the-badge)](https://github.com/ALiaoHaolong/biome-snapshot/issues)
 
-Issues:   
-[Issues · 暗夜/Biome Snapshot - Gitee.com](https://gitee.com/AnNight/biome-snapshot/issues)
+</div>
 
-Wiki:  
-[Wiki - Gitee.com](https://gitee.com/AnNight/biome-snapshot/wikis)
-
-## Introduction
+---
 
 This mod provides some commands to export the biome or terrain status of a specified coordinate range as a flat map (requires permission level of 4).
 
@@ -173,7 +173,7 @@ Based on biomes, each biome has its own unique color.
 
 Example: `/biome-snapshot biome -5000 -5000 0 0`
 
-![Biome Color Resolver](https://cdn.modrinth.com/data/cached_images/9737a83a70eb50dfe96b38dc92fd142f3b5ac8fc.png)
+![Biome Color Resolver](https://cdn.jsdelivr.net/gh/ALiaoHaolong/biome-snapshot@master/docs/public/images/Biome.png)
 
 ### Mainland Ocean Biome Color Resolver
 
@@ -183,7 +183,7 @@ Based on biomes, all biomes are divided into two categories: mainland and ocean.
 
 Example: `/biome-snapshot mainland_ocean_biome -5000 -5000 0 0`
 
-![Mainland Ocean Biome Color Resolver](https://cdn.modrinth.com/data/cached_images/7e0b26bf0b1187585125739e679928d09b73ea6b.png)
+![Mainland Ocean Biome Color Resolver](https://cdn.jsdelivr.net/gh/ALiaoHaolong/biome-snapshot@master/docs/public/images/MainlandOceanBiome.png)
 
 ### Mainland River Ocean Biome Color Resolver
 
@@ -193,7 +193,7 @@ Based on biomes, all biomes are divided into three categories: mainland, river, 
 
 Example: `/biome-snapshot mainland_river_ocean_biome -5000 -5000 0 0`
 
-![Mainland River Ocean Biome Color Resolver](https://cdn.modrinth.com/data/cached_images/6ca8a957a1e2abfd62e93edf9b6334a38e64b3e2.png)
+![Mainland River Ocean Biome Color Resolver](https://cdn.jsdelivr.net/gh/ALiaoHaolong/biome-snapshot@master/docs/public/images/MainlandRiverOceanBiome.png)
 
 ### Real Coastline Color Resolver
 
@@ -212,7 +212,7 @@ In addition, subsequent stages such as terrain carving (CARVERS) may still sligh
 
 Example: `/biome-snapshot real_coastline -5000 -5000 0 0`
 
-![Real Coastline Color Resolver](https://cdn.modrinth.com/data/cached_images/418047f396fee7de417330d8fe833e0c918e8850.png)
+![Real Coastline Color Resolver](https://cdn.jsdelivr.net/gh/ALiaoHaolong/biome-snapshot@master/docs/public/images/RealCoastline.png)
 
 ## For Mod and Datapack Developers
 
@@ -224,13 +224,6 @@ Please provide the mod or datapack home page link, your identity (developer, adm
 
 I will respond to your request in the issue.
 
-## Author
-
-廖浩龙
-
-- aliaohaolong@qq.com
-- aliaohaolong@gmail.com
-
 ## License
 
-This project uses [Apache License 2.0](https://gitee.com/AnNight/biome-snapshot/blob/v1/LICENSE.txt).
+Licensed under the [Apache License 2.0](https://github.com/ALiaoHaolong/biome-snapshot/blob/master/LICENSE).
