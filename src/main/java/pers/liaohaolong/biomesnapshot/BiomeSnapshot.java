@@ -41,9 +41,6 @@ public class BiomeSnapshot implements ModInitializer {
 
     @Override
     public void onInitialize() {
-        // 注册表：颜色解析器
-        BiomeSnapshotRegistry.registerColorResolvers();
-
         // 注册命令参数类型
         BiomeSnapshotRegistry.registerArgumentType();
 
