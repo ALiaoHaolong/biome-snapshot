@@ -17,7 +17,6 @@ import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
 import pers.liaohaolong.biomesnapshot.color.resolver.ColorResolverWrapper;
 import pers.liaohaolong.biomesnapshot.command.argument.ColorResolverEnum;
-import pers.liaohaolong.biomesnapshot.command.argument.ColorResolverArgumentType;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -31,12 +30,11 @@ import static pers.liaohaolong.biomesnapshot.BiomeSnapshot.MOD_ID;
 /**
  * <h3>/biome-snapshot 命令</h3>
  */
-public class BiomeSnapshotCommand implements Command<ServerCommandSource> {
+public abstract class BiomeSnapshotCommand implements Command<ServerCommandSource> {
 
     private static final Logger LOGGER = LogManager.getLogger();
 
-    @Override
-    public int run(CommandContext<ServerCommandSource> context) {
+    public int run(CommandContext<ServerCommandSource> context, ColorResolverEnum colorResolverEnum) {
         // 发送提示
         context.getSource().sendFeedback(Text.translatable("command.biome-snapshot.start"), false);
 
@@ -46,8 +44,6 @@ public class BiomeSnapshotCommand implements Command<ServerCommandSource> {
         File directory = FabricLoader.getInstance().getConfigDir().resolve(MOD_ID).resolve(levelName).toFile();
         File file = new File(directory, fileName);
 
-        // 获取颜色解析器枚举值
-        ColorResolverEnum colorResolverEnum = ColorResolverArgumentType.getColorResolverEnum(context, "colorResolver");
         // 获取起始坐标
         ColumnPos pos1 = ColumnPosArgumentType.getColumnPos(context, "from");
         // 获取结束坐标

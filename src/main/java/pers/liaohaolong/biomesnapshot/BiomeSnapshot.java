@@ -1,9 +1,9 @@
 package pers.liaohaolong.biomesnapshot;
 
-import com.mojang.brigadier.Command;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
+import com.mojang.brigadier.context.CommandContext;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.minecraft.command.argument.ColumnPosArgumentType;
@@ -14,7 +14,6 @@ import pers.liaohaolong.biomesnapshot.command.BiomeSnapshotCommand;
 import pers.liaohaolong.biomesnapshot.command.BiomeSnapshotConfigCommand.BiomeCommand;
 import pers.liaohaolong.biomesnapshot.command.BiomeSnapshotConfigCommand.MainlandOceanBiomeCommand;
 import pers.liaohaolong.biomesnapshot.command.BiomeSnapshotConfigCommand.MainlandRiverOceanBiomeCommand;
-import pers.liaohaolong.biomesnapshot.command.argument.ColorResolverArgumentType;
 import pers.liaohaolong.biomesnapshot.command.argument.ColorResolverEnum;
 import pers.liaohaolong.biomesnapshot.command.suggestion.BiomeColorSuggestionProvider;
 import pers.liaohaolong.biomesnapshot.command.suggestion.BiomeIdentifierSuggestionProvider;
@@ -34,32 +33,19 @@ public class BiomeSnapshot implements ModInitializer {
 
     public static final String MOD_ID = "biome-snapshot";
 
-    private static final Command<ServerCommandSource> COMMAND = new BiomeSnapshotCommand();
     private static final BiomeCommand BIOME_COMMAND = new BiomeCommand();
     private static final MainlandOceanBiomeCommand MAINLAND_OCEAN_BIOME_COMMAND = new MainlandOceanBiomeCommand();
     private static final MainlandRiverOceanBiomeCommand MAINLAND_RIVER_OCEAN_BIOME_COMMAND = new MainlandRiverOceanBiomeCommand();
 
     @Override
     public void onInitialize() {
-        // 注册表：颜色解析器
-        BiomeSnapshotRegistry.registerColorResolvers();
-
-        // 注册命令参数类型
-        BiomeSnapshotRegistry.registerArgumentType();
-
         // 创建命令
         LiteralArgumentBuilder<ServerCommandSource> command = literal(MOD_ID)
                 .requires(source -> source.hasPermissionLevel(4))
-                // 颜色解析器
-                .then(argument("colorResolver", ColorResolverArgumentType.colorResolver())
-                        // 起始坐标
-                        .then(argument("from", ColumnPosArgumentType.columnPos())
-                                // 结束坐标
-                                .then(argument("to", ColumnPosArgumentType.columnPos())
-                                        .executes(COMMAND)
-                                )
-                        )
-                );
+                .then(colorResolver(ColorResolverEnum.BIOME))
+                .then(colorResolver(ColorResolverEnum.MAINLAND_OCEAN_BIOME))
+                .then(colorResolver(ColorResolverEnum.MAINLAND_RIVER_OCEAN_BIOME))
+                .then(colorResolver(ColorResolverEnum.REAL_COASTLINE));
         LiteralArgumentBuilder<ServerCommandSource> configCommand = literal(MOD_ID + "-config")
                 .requires(source -> source.hasPermissionLevel(4))
                 .then(literal(ColorResolverEnum.BIOME.asString())
@@ -157,6 +143,20 @@ public class BiomeSnapshot implements ModInitializer {
             dispatcher.register(command);
             dispatcher.register(configCommand);
         });
+    }
+
+    private static LiteralArgumentBuilder<ServerCommandSource> colorResolver(final ColorResolverEnum colorResolver) {
+        return literal(colorResolver.asString())
+                .then(argument("from", ColumnPosArgumentType.columnPos())
+                        .then(argument("to", ColumnPosArgumentType.columnPos())
+                                .executes(new BiomeSnapshotCommand() {
+                                    @Override
+                                    public int run(CommandContext<ServerCommandSource> context) {
+                                        return this.run(context, colorResolver);
+                                    }
+                                })
+                        )
+                );
     }
 
 }
