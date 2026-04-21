@@ -1,5 +1,7 @@
 package pers.liaohaolong.biomesnapshot.command.argument;
 
+import pers.liaohaolong.biomesnapshot.color.resolver.ColorResolver;
+import pers.liaohaolong.biomesnapshot.color.resolver.ColorResolvers;
 import pers.liaohaolong.biomesnapshot.color.resolver.block.RealCoastlineColorResolver;
 
 /**
@@ -14,27 +16,44 @@ public enum ColorResolverEnum {
      *
      * @see pers.liaohaolong.biomesnapshot.color.resolver.biome.BiomeColorResolver
      */
-    BIOME,
+    BIOME("biome", ColorResolvers.BIOME_COLOR_RESOLVER),
 
     /**
      * 大陆海洋生物群系颜色解析器
      *
      * @see pers.liaohaolong.biomesnapshot.color.resolver.biome.MainlandOceanBiomeColorResolver
      */
-    MAINLAND_OCEAN_BIOME,
+    MAINLAND_OCEAN_BIOME("mainland_ocean_biome", ColorResolvers.MAINLAND_OCEAN_BIOME_COLOR_RESOLVER),
 
     /**
-     * 大陆河流海洋生物群系颜色解析器
+     * 大陆河域海洋生物群系颜色解析器
      *
      * @see pers.liaohaolong.biomesnapshot.color.resolver.biome.MainlandRiverOceanBiomeColorResolver
      */
-    MAINLAND_RIVER_OCEAN_BIOME,
+    MAINLAND_RIVER_OCEAN_BIOME("mainland_river_ocean_biome", ColorResolvers.MAINLAND_RIVER_OCEAN_BIOME_COLOR_RESOLVER),
 
     /**
      * 真实海岸线颜色解析器
      *
      * @see RealCoastlineColorResolver
      */
-    REAL_COASTLINE,
+    REAL_COASTLINE("real_coastline", ColorResolvers.REAL_COASTLINE_COLOR_RESOLVER),
+    ;
+
+    private final String id;
+    private final ColorResolver colorResolver;
+
+    ColorResolverEnum(final String id, final ColorResolver colorResolver) {
+        this.id = id;
+        this.colorResolver = colorResolver;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public ColorResolver getColorResolver() {
+        return this.colorResolver;
+    }
 
 }

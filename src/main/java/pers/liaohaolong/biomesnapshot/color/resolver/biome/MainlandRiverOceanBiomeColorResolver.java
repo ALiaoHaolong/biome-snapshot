@@ -1,7 +1,9 @@
 package pers.liaohaolong.biomesnapshot.color.resolver.biome;
 
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.tag.BiomeTags;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.registry.RegistryEntry;
 import net.minecraft.world.biome.Biome;
 
 /**
@@ -19,14 +21,14 @@ public class MainlandRiverOceanBiomeColorResolver extends AbstractBiomeColorReso
 
     @Override
     protected int getBiomeColor(ServerWorld world, BlockPos pos) {
-        // 获取生物群系的分类名称
-        Biome.Category category = Biome.getCategory(world.getBiome(pos));
-        // 返回分类颜色
-        return switch (category) {
-            case OCEAN -> oceanColor;
-            case RIVER -> riverColor;
-            default -> mainlandColor;
-        };
+        // 获取生物群系
+        RegistryEntry<Biome> biomeRegistryEntry = world.getBiome(pos);
+        // 判断标签
+        if (biomeRegistryEntry.isIn(BiomeTags.IS_OCEAN))
+            return oceanColor;
+        if (biomeRegistryEntry.isIn(BiomeTags.IS_RIVER))
+            return riverColor;
+        return mainlandColor;
     }
 
     public int getMainlandColor() {
