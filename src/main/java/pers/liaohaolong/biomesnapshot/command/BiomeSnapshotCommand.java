@@ -9,7 +9,6 @@ import net.minecraft.server.world.ChunkTicketType;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.TranslatableText;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.ChunkSectionPos;
 import net.minecraft.util.math.ColumnPos;
@@ -17,9 +16,7 @@ import net.minecraft.world.chunk.ChunkStatus;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
-import pers.liaohaolong.biomesnapshot.BiomeSnapshotRegistry;
 import pers.liaohaolong.biomesnapshot.color.resolver.ColorResolverWrapper;
-import pers.liaohaolong.biomesnapshot.command.argument.EnumArgumentType;
 import pers.liaohaolong.biomesnapshot.command.argument.ColorResolverEnum;
 
 import javax.imageio.ImageIO;
@@ -34,12 +31,11 @@ import static pers.liaohaolong.biomesnapshot.BiomeSnapshot.MOD_ID;
 /**
  * <h3>/biome-snapshot 命令</h3>
  */
-public class BiomeSnapshotCommand implements Command<ServerCommandSource> {
+public abstract class BiomeSnapshotCommand implements Command<ServerCommandSource> {
 
     private static final Logger LOGGER = LogManager.getLogger();
 
-    @Override
-    public int run(CommandContext<ServerCommandSource> context) {
+    public int run(CommandContext<ServerCommandSource> context, ColorResolverEnum colorResolverEnum) {
         // 发送提示
         context.getSource().sendFeedback(new TranslatableText("command.biome-snapshot.start"), false);
 
@@ -49,8 +45,6 @@ public class BiomeSnapshotCommand implements Command<ServerCommandSource> {
         File directory = FabricLoader.getInstance().getConfigDir().resolve(MOD_ID).resolve(levelName).toFile();
         File file = new File(directory, fileName);
 
-        // 获取颜色解析器枚举值
-        ColorResolverEnum colorResolverEnum = EnumArgumentType.getEnum(context, "colorResolver", ColorResolverEnum.class);
         // 获取起始坐标
         ColumnPos pos1 = ColumnPosArgumentType.getColumnPos(context, "from");
         // 获取结束坐标
@@ -68,7 +62,7 @@ public class BiomeSnapshotCommand implements Command<ServerCommandSource> {
 
         // 颜色解析
         ColorResolverWrapper colorResolverWrapper = new ColorResolverWrapper();
-        colorResolverWrapper.setColorResolver(BiomeSnapshotRegistry.COLOR_RESOLVER.get(new Identifier(MOD_ID, colorResolverEnum.name().toLowerCase())));
+        colorResolverWrapper.setColorResolver(colorResolverEnum.getColorResolver());
 
         // ------------------------------ 区块缓存命中优化 ------------------------------
         // 区块起始坐标
