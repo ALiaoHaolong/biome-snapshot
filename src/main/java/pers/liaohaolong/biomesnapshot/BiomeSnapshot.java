@@ -6,6 +6,7 @@ import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
+import net.minecraft.command.DefaultPermissions;
 import net.minecraft.command.argument.ColumnPosArgumentType;
 import net.minecraft.server.command.ServerCommandSource;
 import pers.liaohaolong.biomesnapshot.color.resolver.biome.MainlandOceanBiomeColorResolver;
@@ -41,13 +42,13 @@ public class BiomeSnapshot implements ModInitializer {
     public void onInitialize() {
         // 创建命令
         LiteralArgumentBuilder<ServerCommandSource> command = literal(MOD_ID)
-                .requires(source -> source.hasPermissionLevel(4))
+                .requires(source -> source.getPermissions().hasPermission(DefaultPermissions.OWNERS))
                 .then(colorResolver(ColorResolverEnum.BIOME))
                 .then(colorResolver(ColorResolverEnum.MAINLAND_OCEAN_BIOME))
                 .then(colorResolver(ColorResolverEnum.MAINLAND_RIVER_OCEAN_BIOME))
                 .then(colorResolver(ColorResolverEnum.REAL_COASTLINE));
         LiteralArgumentBuilder<ServerCommandSource> configCommand = literal(MOD_ID + "-config")
-                .requires(source -> source.hasPermissionLevel(4))
+                .requires(source -> source.getPermissions().hasPermission(DefaultPermissions.OWNERS))
                 .then(literal(ColorResolverEnum.BIOME.asString())
                         .then(literal("set")
                                 .then(argument("namespace", StringArgumentType.word())

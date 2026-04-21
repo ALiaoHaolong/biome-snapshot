@@ -26,6 +26,7 @@ import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Objects;
 
 import static pers.liaohaolong.biomesnapshot.BiomeSnapshot.MOD_ID;
 
@@ -134,7 +135,7 @@ public abstract class BiomeSnapshotCommand implements Command<ServerCommandSourc
                         // 正常来说，应该获取tasks后，尝试对其中的延迟任务进行精准清理
                         // （通过debug可知，除了本线程，似乎还有其他线程在往这里放任务，比如C2S的网络任务等），
                         // 但在单人模式下，直接这样全部清空目前看好像也没问题
-                        while (world.getServer().getTaskCount() > 0)
+                        while (Objects.requireNonNull(world.getServer()).getTaskCount() > 0)
                             world.getServer().runTask();
                         context.getSource().sendFeedback(() -> Text.translatable("command.biome-snapshot.savingDone"), false);
                     }

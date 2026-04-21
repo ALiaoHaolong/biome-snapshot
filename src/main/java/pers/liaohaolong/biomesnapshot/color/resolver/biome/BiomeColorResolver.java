@@ -1,7 +1,7 @@
 package pers.liaohaolong.biomesnapshot.color.resolver.biome;
 
-import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.registry.RegistryKey;
+import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
@@ -10,10 +10,7 @@ import net.minecraft.world.biome.Biome;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedHashMap;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -52,7 +49,7 @@ public class BiomeColorResolver extends AbstractBiomeColorResolver {
             }
             return rgb;
         }
-        LOGGER.error("异常的生物群系注册状态：{}, {}, {}, {}", world.getServer().getVersion(), world.getSeed(), world.getDimension().effects(), pos.toShortString());
+        LOGGER.error("异常的生物群系注册状态：{}, {}, {}", Objects.requireNonNull(world.getServer()).getVersion(), world.getSeed(), pos.toShortString());
         return -1;
     }
 
