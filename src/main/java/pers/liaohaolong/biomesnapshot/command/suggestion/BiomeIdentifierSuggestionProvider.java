@@ -5,8 +5,8 @@ import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.suggestion.SuggestionProvider;
 import com.mojang.brigadier.suggestion.Suggestions;
 import com.mojang.brigadier.suggestion.SuggestionsBuilder;
-import net.minecraft.server.command.ServerCommandSource;
-import net.minecraft.util.Identifier;
+import net.minecraft.commands.CommandSourceStack;
+import net.minecraft.resources.Identifier;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import pers.liaohaolong.biomesnapshot.color.resolver.ColorResolvers;
@@ -25,22 +25,22 @@ public class BiomeIdentifierSuggestionProvider {
     }
 
     @Contract(value = " -> new", pure = true)
-    public static @NotNull SuggestionProvider<ServerCommandSource> ofNamespace() {
+    public static @NotNull SuggestionProvider<CommandSourceStack> ofNamespace() {
         return new BiomeNamespaceSuggestionProvider();
     }
 
     @Contract(value = " -> new", pure = true)
-    public static @NotNull SuggestionProvider<ServerCommandSource> ofPath() {
+    public static @NotNull SuggestionProvider<CommandSourceStack> ofPath() {
         return new BiomePathSuggestionProvider();
     }
 
-    public static class BiomeNamespaceSuggestionProvider extends BiomeIdentifierSuggestionProvider implements SuggestionProvider<ServerCommandSource> {
+    public static class BiomeNamespaceSuggestionProvider extends BiomeIdentifierSuggestionProvider implements SuggestionProvider<CommandSourceStack> {
 
         protected BiomeNamespaceSuggestionProvider() {
         }
 
         @Override
-        public CompletableFuture<Suggestions> getSuggestions(CommandContext<ServerCommandSource> context, @NotNull SuggestionsBuilder builder) {
+        public CompletableFuture<Suggestions> getSuggestions(CommandContext<CommandSourceStack> context, @NotNull SuggestionsBuilder builder) {
             // 获取当前输入
             String input = builder.getRemaining();
             // 遍历
@@ -55,13 +55,13 @@ public class BiomeIdentifierSuggestionProvider {
 
     }
 
-    public static class BiomePathSuggestionProvider extends BiomeIdentifierSuggestionProvider implements SuggestionProvider<ServerCommandSource> {
+    public static class BiomePathSuggestionProvider extends BiomeIdentifierSuggestionProvider implements SuggestionProvider<CommandSourceStack> {
 
         protected BiomePathSuggestionProvider() {
         }
 
         @Override
-        public CompletableFuture<Suggestions> getSuggestions(CommandContext<ServerCommandSource> context, @NotNull SuggestionsBuilder builder) {
+        public CompletableFuture<Suggestions> getSuggestions(CommandContext<CommandSourceStack> context, @NotNull SuggestionsBuilder builder) {
             String namespace = StringArgumentType.getString(context, "namespace");
 
             // 获取当前输入

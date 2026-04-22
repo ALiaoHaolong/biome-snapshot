@@ -1,7 +1,8 @@
 package pers.liaohaolong.biomesnapshot.command.argument;
 
 import com.mojang.serialization.Codec;
-import net.minecraft.util.StringIdentifiable;
+import net.minecraft.util.StringRepresentable;
+import org.jspecify.annotations.NonNull;
 import pers.liaohaolong.biomesnapshot.color.resolver.ColorResolver;
 import pers.liaohaolong.biomesnapshot.color.resolver.ColorResolvers;
 import pers.liaohaolong.biomesnapshot.color.resolver.block.RealCoastlineColorResolver;
@@ -11,11 +12,9 @@ import pers.liaohaolong.biomesnapshot.color.resolver.block.RealCoastlineColorRes
  *
  * <p>与颜色解析器一一对应，命名方式为省略 ColorResolver 后缀的大蛇形命名。</p>
  *
- * @see net.minecraft.world.Heightmap.Type
- * @see net.minecraft.util.BlockMirror
- * @see net.minecraft.util.BlockRotation
+ * @see net.minecraft.world.level.levelgen.Heightmap.Types
  */
-public enum ColorResolverEnum implements StringIdentifiable {
+public enum ColorResolverEnum implements StringRepresentable {
 
     /**
      * 生物群系颜色解析器
@@ -46,12 +45,12 @@ public enum ColorResolverEnum implements StringIdentifiable {
     REAL_COASTLINE("real_coastline", ColorResolvers.REAL_COASTLINE_COLOR_RESOLVER),
     ;
 
-    public static final Codec<ColorResolverEnum> CODEC = StringIdentifiable.createCodec(ColorResolverEnum::values);
-    private final String id;
+    public static final Codec<ColorResolverEnum> CODEC = StringRepresentable.fromEnum(ColorResolverEnum::values);
+    private final String serializationKey;
     private final ColorResolver colorResolver;
 
-    ColorResolverEnum(final String id, final ColorResolver colorResolver) {
-        this.id = id;
+    ColorResolverEnum(final String serializationKey, final ColorResolver colorResolver) {
+        this.serializationKey = serializationKey;
         this.colorResolver = colorResolver;
     }
 
@@ -60,8 +59,8 @@ public enum ColorResolverEnum implements StringIdentifiable {
     }
 
     @Override
-    public String asString() {
-        return this.id;
+    public @NonNull String getSerializedName() {
+        return this.serializationKey;
     }
 
 }

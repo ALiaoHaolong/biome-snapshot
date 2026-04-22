@@ -1,8 +1,5 @@
-import net.fabricmc.loom.task.RemapJarTask
-import net.fabricmc.loom.task.RemapSourcesJarTask
-
 plugins {
-    id 'net.fabricmc.fabric-loom-remap' version "${loom_version}"
+    id 'net.fabricmc.fabric-loom' version "${loom_version}"
 }
 
 version = project.mod_version
@@ -17,9 +14,8 @@ repositories {
 
 dependencies {
     minecraft "com.mojang:minecraft:${project.minecraft_version}"
-    mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
-    modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
-    modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
+    implementation "net.fabricmc:fabric-loader:${project.loader_version}"
+    implementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
 }
 
 processResources {
@@ -39,7 +35,7 @@ loom {
 // Set up the Java compilation task.
 tasks.withType(JavaCompile).configureEach {
     it.options.encoding = "UTF-8"
-    it.options.release = 17
+    it.options.release = 25
 }
 
 // Set up the Java plugins.
@@ -56,11 +52,11 @@ jar {
 }
 
 // Customize the file name of the main jar.
-tasks.named('remapJar', RemapJarTask) {
+tasks.named('jar', Jar) {
     archiveFileName = "${project.archives_base_name}-fabric-${project.mod_version}-mc${project.minecraft_version}.jar"
 }
 
 // Customize the file name of the sources jar.
-tasks.named('remapSourcesJar', RemapSourcesJarTask) {
+tasks.named('sourcesJar', Jar) {
     archiveFileName = "${project.archives_base_name}-fabric-${project.mod_version}-mc${project.minecraft_version}-sources.jar"
 }

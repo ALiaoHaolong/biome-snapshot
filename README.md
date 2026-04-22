@@ -7,7 +7,7 @@
 
 ## Branch Info
 
-This is the **v8** branch, containing the mod source code for Biome Snapshot supporting Minecraft 1.21.11.
+This is the **v9** branch, containing the mod source code for Biome Snapshot supporting Minecraft 26.1.
 
 For full documentation, changelogs, etc., please see:
 

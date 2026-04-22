@@ -1,7 +1,7 @@
 package pers.liaohaolong.biomesnapshot.color.resolver;
 
-import net.minecraft.server.command.ServerCommandSource;
-import net.minecraft.server.world.ServerWorld;
+import net.minecraft.commands.CommandSourceStack;
+import net.minecraft.server.MinecraftServer;
 
 import java.awt.*;
 import java.util.Objects;
@@ -23,13 +23,13 @@ public class ColorResolverWrapper implements ColorResolver {
     }
 
     @Override
-    public void prepare(ServerCommandSource source) {
+    public void prepare(CommandSourceStack source) {
         if (this.colorResolver != null)
             this.colorResolver.prepare(source);
     }
 
     @Override
-    public int getColor(ServerWorld world, int x, int z) {
+    public int getColor(MinecraftServer world, int x, int z) {
         int color = colorResolver.getColor(world, x, z);
         // 解析成功
         if (color >= 0) {
@@ -40,7 +40,7 @@ public class ColorResolverWrapper implements ColorResolver {
     }
 
     @Override
-    public void finish(ServerCommandSource source) {
+    public void finish(CommandSourceStack source) {
         if (this.colorResolver != null)
             this.colorResolver.finish(source);
     }

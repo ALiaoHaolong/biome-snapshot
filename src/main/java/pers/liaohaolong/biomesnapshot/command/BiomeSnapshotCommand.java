@@ -3,17 +3,17 @@ package pers.liaohaolong.biomesnapshot.command;
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.context.CommandContext;
 import net.fabricmc.loader.api.FabricLoader;
-import net.minecraft.command.argument.ColumnPosArgumentType;
-import net.minecraft.server.command.ServerCommandSource;
-import net.minecraft.server.world.ChunkLevelType;
-import net.minecraft.server.world.ChunkLevels;
-import net.minecraft.server.world.ChunkTicketType;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.text.Text;
-import net.minecraft.util.math.ChunkPos;
-import net.minecraft.util.math.ChunkSectionPos;
-import net.minecraft.util.math.ColumnPos;
-import net.minecraft.world.chunk.ChunkStatus;
+import net.minecraft.commands.CommandSourceStack;
+import net.minecraft.commands.arguments.coordinates.ColumnPosArgument;
+import net.minecraft.core.SectionPos;
+import net.minecraft.network.chat.Component;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.level.ChunkLevel;
+import net.minecraft.server.level.ColumnPos;
+import net.minecraft.server.level.FullChunkStatus;
+import net.minecraft.server.level.TicketType;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.chunk.status.ChunkStatus;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
@@ -26,31 +26,30 @@ import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Objects;
 
 import static pers.liaohaolong.biomesnapshot.BiomeSnapshot.MOD_ID;
 
 /**
  * <h3>/biome-snapshot 命令</h3>
  */
-public abstract class BiomeSnapshotCommand implements Command<ServerCommandSource> {
+public abstract class BiomeSnapshotCommand implements Command<CommandSourceStack> {
 
     private static final Logger LOGGER = LogManager.getLogger();
 
-    public int run(CommandContext<ServerCommandSource> context, ColorResolverEnum colorResolverEnum) {
+    public int run(CommandContext<CommandSourceStack> context, ColorResolverEnum colorResolverEnum) {
         // 发送提示
-        context.getSource().sendFeedback(() -> Text.translatable("command.biome-snapshot.start"), false);
+        context.getSource().sendSuccess(() -> Component.translatable("command.biome-snapshot.start"), false);
 
         // 设置文件名与路径
         String fileName = getCurrentTimestamp() + ".png";
-        String levelName = context.getSource().getServer().getSaveProperties().getLevelName();
+        String levelName = context.getSource().getServer().getWorldData().getLevelName();
         File directory = FabricLoader.getInstance().getConfigDir().resolve(MOD_ID).resolve(levelName).toFile();
         File file = new File(directory, fileName);
 
         // 获取起始坐标
-        ColumnPos pos1 = ColumnPosArgumentType.getColumnPos(context, "from");
+        ColumnPos pos1 = ColumnPosArgument.getColumnPos(context, "from");
         // 获取结束坐标
-        ColumnPos pos2 = ColumnPosArgumentType.getColumnPos(context, "to");
+        ColumnPos pos2 = ColumnPosArgument.getColumnPos(context, "to");
 
         // 规格化起始坐标
         ColumnPos startPos = new ColumnPos(Math.min(pos1.x(), pos2.x()),  Math.min(pos1.z(), pos2.z()));
@@ -68,11 +67,11 @@ public abstract class BiomeSnapshotCommand implements Command<ServerCommandSourc
 
         // ------------------------------ 区块缓存命中优化 ------------------------------
         // 区块起始坐标
-        int startChunkX = ChunkSectionPos.getSectionCoord(startPos.x());
-        int startChunkZ = ChunkSectionPos.getSectionCoord(startPos.z());
+        int startChunkX = SectionPos.blockToSectionCoord(startPos.x());
+        int startChunkZ = SectionPos.blockToSectionCoord(startPos.z());
         // 区块结束坐标
-        int endChunkX = ChunkSectionPos.getSectionCoord(endPos.x());
-        int endChunkZ = ChunkSectionPos.getSectionCoord(endPos.z());
+        int endChunkX = SectionPos.blockToSectionCoord(endPos.x());
+        int endChunkZ = SectionPos.blockToSectionCoord(endPos.z());
         // 局部变量优化
         int chunkX, chunkZ;
         int endX, endZ;
@@ -92,16 +91,16 @@ public abstract class BiomeSnapshotCommand implements Command<ServerCommandSourc
         boolean enableChunkOptimization = colorResolverWrapper.enableChunkOptimization();
 
         // 绘制生物群系图片
-        ServerWorld world = context.getSource().getWorld();
+        MinecraftServer world = context.getSource().getServer();
         // 遍历区块
         colorResolverWrapper.prepare(context.getSource());
         for (chunkX = startChunkX; chunkX <= endChunkX; chunkX++) {
             for (chunkZ = startChunkZ; chunkZ <= endChunkZ; chunkZ++) {
                 // 获取区块内的起始坐标和结束坐标，并遍历
-                endX = Math.min(ChunkSectionPos.getBlockCoord(chunkX) | 0xF, endPos.x());
-                endZ = Math.min(ChunkSectionPos.getBlockCoord(chunkZ) | 0xF, endPos.z());
-                for (x = Math.max(ChunkSectionPos.getBlockCoord(chunkX), startPos.x()); x <= endX; x++) {
-                    for (z = Math.max(ChunkSectionPos.getBlockCoord(chunkZ), startPos.z()); z <= endZ; z++) {
+                endX = Math.min(SectionPos.sectionToBlockCoord(chunkX) | 0xF, endPos.x());
+                endZ = Math.min(SectionPos.sectionToBlockCoord(chunkZ) | 0xF, endPos.z());
+                for (x = Math.max(SectionPos.sectionToBlockCoord(chunkX), startPos.x()); x <= endX; x++) {
+                    for (z = Math.max(SectionPos.sectionToBlockCoord(chunkZ), startPos.z()); z <= endZ; z++) {
                         // 获取并设置颜色
                         image.setRGB(x - startPos.x(), z - startPos.z(), colorResolverWrapper.getColor(world, x, z));
                     }
@@ -116,18 +115,18 @@ public abstract class BiomeSnapshotCommand implements Command<ServerCommandSourc
                     currentPercent = (int) Math.ceil((double) chunkCount / totalCountOfChunk * 100) - 1;
                     int finalCurrentPercent = currentPercent;
                     int finalChunkCount = chunkCount;
-                    context.getSource().sendFeedback(() -> Text.literal(finalCurrentPercent + "% chunk:" + finalChunkCount + "/" + totalCountOfChunk), false);
+                    context.getSource().sendSuccess(() -> Component.literal(finalCurrentPercent + "% chunk:" + finalChunkCount + "/" + totalCountOfChunk), false);
                 }
 
                 // 区块回收优化
                 if (enableChunkOptimization) {
                     // 删除区块票据
                     ChunkPos chunkPos = new ChunkPos(chunkX, chunkZ);
-                    world.getChunkManager().removeTicket(ChunkTicketType.UNKNOWN, chunkPos, ChunkLevels.getLevelFromType(ChunkLevelType.FULL) - ChunkLevels.getLevelFromStatus(ChunkStatus.NOISE));
+                    world.findRespawnDimension().getChunkSource().removeTicketWithRadius(TicketType.UNKNOWN, chunkPos, ChunkLevel.byStatus(FullChunkStatus.FULL) - ChunkLevel.byStatus(ChunkStatus.NOISE));
                     // 定期卸载区块
                     if (chunkCount % 1000 == 0) {
-                        context.getSource().sendFeedback(() -> Text.translatable("command.biome-snapshot.savingChunks"), false);
-                        world.getChunkManager().save(true);
+                        context.getSource().sendSuccess(() -> Component.translatable("command.biome-snapshot.savingChunks"), false);
+                        world.findRespawnDimension().getChunkSource().getDataStorage().saveAndJoin();
                         // 通过debug可知，1.21.4版本中，在执行此命令开始时，world.getServer().tasks为空，
                         // 在命令执行时，区块生成任务的某个阶段会向tasks发送一个或若干个延迟任务（该任务包含一个对ProtoChunk的引用）。
                         // 因此如果不在这里将定期任务清理掉，所有加载过的ProtoChunk将无法在内存中回收，
@@ -135,9 +134,9 @@ public abstract class BiomeSnapshotCommand implements Command<ServerCommandSourc
                         // 正常来说，应该获取tasks后，尝试对其中的延迟任务进行精准清理
                         // （通过debug可知，除了本线程，似乎还有其他线程在往这里放任务，比如C2S的网络任务等），
                         // 但在单人模式下，直接这样全部清空目前看好像也没问题
-                        while (Objects.requireNonNull(world.getServer()).getTaskCount() > 0)
-                            world.getServer().runTask();
-                        context.getSource().sendFeedback(() -> Text.translatable("command.biome-snapshot.savingDone"), false);
+                        // while (Objects.requireNonNull(world.getServer()).getTaskCount() > 0)
+                        //     world.getServer().runTask();
+                        context.getSource().sendSuccess(() -> Component.translatable("command.biome-snapshot.savingDone"), false);
                     }
                 }
             }
@@ -146,7 +145,7 @@ public abstract class BiomeSnapshotCommand implements Command<ServerCommandSourc
 
         // 保存
         try {
-            context.getSource().sendFeedback(() -> Text.translatable("command.biome-snapshot.savingImage"), false);
+            context.getSource().sendSuccess(() -> Component.translatable("command.biome-snapshot.savingImage"), false);
             // 检查文件夹
             if (!directory.exists() && !directory.mkdirs())
                 throw new IOException("Failed to create directory");
@@ -155,12 +154,12 @@ public abstract class BiomeSnapshotCommand implements Command<ServerCommandSourc
         } catch (Exception e) {
             LOGGER.error("Failed to save biome snapshot image", e);
             // 保存失败
-            context.getSource().sendFeedback(() -> Text.translatable("command.biome-snapshot.fail"), false);
+            context.getSource().sendSuccess(() -> Component.translatable("command.biome-snapshot.fail"), false);
             return 0;
         }
 
         // 成功，1.21.4中，Minecraft 出于安全考虑，不允许通过聊天系统直接打开本地文件（Action not allowed: OPEN_FILE），所以这里仅输出文件名
-        context.getSource().sendFeedback(() -> Text.translatable("command.biome-snapshot.success", file.getName()), false);
+        context.getSource().sendSuccess(() -> Component.translatable("command.biome-snapshot.success", file.getName()), false);
         return 1;
     }
 

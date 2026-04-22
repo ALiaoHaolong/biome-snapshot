@@ -6,9 +6,9 @@ import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
-import net.minecraft.command.DefaultPermissions;
-import net.minecraft.command.argument.ColumnPosArgumentType;
-import net.minecraft.server.command.ServerCommandSource;
+import net.minecraft.commands.CommandSourceStack;
+import net.minecraft.commands.Commands;
+import net.minecraft.commands.arguments.coordinates.ColumnPosArgument;
 import pers.liaohaolong.biomesnapshot.color.resolver.biome.MainlandOceanBiomeColorResolver;
 import pers.liaohaolong.biomesnapshot.color.resolver.biome.MainlandRiverOceanBiomeColorResolver;
 import pers.liaohaolong.biomesnapshot.command.BiomeSnapshotCommand;
@@ -20,8 +20,8 @@ import pers.liaohaolong.biomesnapshot.command.suggestion.BiomeColorSuggestionPro
 import pers.liaohaolong.biomesnapshot.command.suggestion.BiomeIdentifierSuggestionProvider;
 import pers.liaohaolong.biomesnapshot.command.suggestion.SingleIntegerSuggestionProvider;
 
-import static net.minecraft.server.command.CommandManager.argument;
-import static net.minecraft.server.command.CommandManager.literal;
+import static net.minecraft.commands.Commands.argument;
+import static net.minecraft.commands.Commands.literal;
 
 /**
  * <h1>Biome Snapshot</h1>
@@ -41,15 +41,15 @@ public class BiomeSnapshot implements ModInitializer {
     @Override
     public void onInitialize() {
         // 创建命令
-        LiteralArgumentBuilder<ServerCommandSource> command = literal(MOD_ID)
-                .requires(source -> source.getPermissions().hasPermission(DefaultPermissions.OWNERS))
+        LiteralArgumentBuilder<CommandSourceStack> command = literal(MOD_ID)
+                .requires(Commands.hasPermission(Commands.LEVEL_OWNERS))
                 .then(colorResolver(ColorResolverEnum.BIOME))
                 .then(colorResolver(ColorResolverEnum.MAINLAND_OCEAN_BIOME))
                 .then(colorResolver(ColorResolverEnum.MAINLAND_RIVER_OCEAN_BIOME))
                 .then(colorResolver(ColorResolverEnum.REAL_COASTLINE));
-        LiteralArgumentBuilder<ServerCommandSource> configCommand = literal(MOD_ID + "-config")
-                .requires(source -> source.getPermissions().hasPermission(DefaultPermissions.OWNERS))
-                .then(literal(ColorResolverEnum.BIOME.asString())
+        LiteralArgumentBuilder<CommandSourceStack> configCommand = literal(MOD_ID + "-config")
+                .requires(Commands.hasPermission(Commands.LEVEL_OWNERS))
+                .then(literal(ColorResolverEnum.BIOME.getSerializedName())
                         .then(literal("set")
                                 .then(argument("namespace", StringArgumentType.word())
                                         .suggests(BiomeIdentifierSuggestionProvider.ofNamespace())
@@ -81,7 +81,7 @@ public class BiomeSnapshot implements ModInitializer {
                                 )
                         )
                 )
-                .then(literal(ColorResolverEnum.MAINLAND_OCEAN_BIOME.asString())
+                .then(literal(ColorResolverEnum.MAINLAND_OCEAN_BIOME.getSerializedName())
                         .then(literal("set")
                                 .then(literal("mainland")
                                         .then(argument("color", IntegerArgumentType.integer(0, 16777215))
@@ -105,7 +105,7 @@ public class BiomeSnapshot implements ModInitializer {
                                 )
                         )
                 )
-                .then(literal(ColorResolverEnum.MAINLAND_RIVER_OCEAN_BIOME.asString())
+                .then(literal(ColorResolverEnum.MAINLAND_RIVER_OCEAN_BIOME.getSerializedName())
                         .then(literal("set")
                                 .then(literal("mainland")
                                         .then(argument("color", IntegerArgumentType.integer(0, 16777215))
@@ -146,13 +146,13 @@ public class BiomeSnapshot implements ModInitializer {
         });
     }
 
-    private static LiteralArgumentBuilder<ServerCommandSource> colorResolver(final ColorResolverEnum colorResolver) {
-        return literal(colorResolver.asString())
-                .then(argument("from", ColumnPosArgumentType.columnPos())
-                        .then(argument("to", ColumnPosArgumentType.columnPos())
+    private static LiteralArgumentBuilder<CommandSourceStack> colorResolver(final ColorResolverEnum colorResolver) {
+        return literal(colorResolver.getSerializedName())
+                .then(argument("from", ColumnPosArgument.columnPos())
+                        .then(argument("to", ColumnPosArgument.columnPos())
                                 .executes(new BiomeSnapshotCommand() {
                                     @Override
-                                    public int run(CommandContext<ServerCommandSource> context) {
+                                    public int run(CommandContext<CommandSourceStack> context) {
                                         return this.run(context, colorResolver);
                                     }
                                 })

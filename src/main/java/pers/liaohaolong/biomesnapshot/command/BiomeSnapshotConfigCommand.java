@@ -3,9 +3,9 @@ package pers.liaohaolong.biomesnapshot.command;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
-import net.minecraft.server.command.ServerCommandSource;
-import net.minecraft.text.Text;
-import net.minecraft.util.Identifier;
+import net.minecraft.commands.CommandSourceStack;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.Identifier;
 import pers.liaohaolong.biomesnapshot.BiomeSnapshotUtils;
 import pers.liaohaolong.biomesnapshot.color.resolver.ColorResolvers;
 import pers.liaohaolong.biomesnapshot.color.resolver.biome.BiomeColorResolver;
@@ -17,8 +17,8 @@ import pers.liaohaolong.biomesnapshot.color.resolver.biome.MainlandRiverOceanBio
  */
 public class BiomeSnapshotConfigCommand {
 
-    protected void sendFeedback(CommandContext<ServerCommandSource> context, String key, Object... args) {
-        context.getSource().sendFeedback(() -> Text.translatable(key, args), true);
+    protected void sendFeedback(CommandContext<CommandSourceStack> context, String key, Object... args) {
+        context.getSource().sendSuccess(() -> Component.translatable(key, args), true);
     }
 
     /**
@@ -28,32 +28,32 @@ public class BiomeSnapshotConfigCommand {
 
         private final BiomeColorResolver colorResolver = (BiomeColorResolver) ColorResolvers.BIOME_COLOR_RESOLVER;
 
-        public int set(CommandContext<ServerCommandSource> context) {
+        public int set(CommandContext<CommandSourceStack> context) {
             String namespace = StringArgumentType.getString(context, "namespace");
             String path = StringArgumentType.getString(context, "path");
             int color = IntegerArgumentType.getInteger(context, "color");
 
-            Identifier identifier = Identifier.of(namespace, path);
+            Identifier identifier = Identifier.fromNamespaceAndPath(namespace, path);
             colorResolver.getBiomeColorMap().put(identifier, color);
             sendFeedback(context, "command.biome-snapshot.config.biome_color_resolver.set.success", identifier.toString(), String.valueOf(color), BiomeSnapshotUtils.toHexString(color));
             return 1;
         }
 
-        public int remove(CommandContext<ServerCommandSource> context) {
+        public int remove(CommandContext<CommandSourceStack> context) {
             String namespace = StringArgumentType.getString(context, "namespace");
             String path = StringArgumentType.getString(context, "path");
 
-            Identifier identifier = Identifier.of(namespace, path);
+            Identifier identifier = Identifier.fromNamespaceAndPath(namespace, path);
             colorResolver.getBiomeColorMap().remove(identifier);
             sendFeedback(context, "command.biome-snapshot.config.biome_color_resolver.remove.success", identifier.toString());
             return 1;
         }
 
-        public int get(CommandContext<ServerCommandSource> context) {
+        public int get(CommandContext<CommandSourceStack> context) {
             String namespace = StringArgumentType.getString(context, "namespace");
             String path = StringArgumentType.getString(context, "path");
 
-            Identifier identifier = Identifier.of(namespace, path);
+            Identifier identifier = Identifier.fromNamespaceAndPath(namespace, path);
             int color = colorResolver.getBiomeColorMap().get(identifier);
             sendFeedback(context, "command.biome-snapshot.config.biome_color_resolver.get", identifier.toString(), String.valueOf(color), BiomeSnapshotUtils.toHexString(color));
             return 1;
@@ -68,7 +68,7 @@ public class BiomeSnapshotConfigCommand {
 
         private final MainlandOceanBiomeColorResolver colorResolver = (MainlandOceanBiomeColorResolver) ColorResolvers.MAINLAND_OCEAN_BIOME_COLOR_RESOLVER;
 
-        public int setMainland(CommandContext<ServerCommandSource> context) {
+        public int setMainland(CommandContext<CommandSourceStack> context) {
             int color = IntegerArgumentType.getInteger(context, "color");
 
             colorResolver.setMainlandColor(color);
@@ -76,7 +76,7 @@ public class BiomeSnapshotConfigCommand {
             return 1;
         }
 
-        public int setOcean(CommandContext<ServerCommandSource> context) {
+        public int setOcean(CommandContext<CommandSourceStack> context) {
             int color = IntegerArgumentType.getInteger(context, "color");
 
             colorResolver.setOceanColor(color);
@@ -84,13 +84,13 @@ public class BiomeSnapshotConfigCommand {
             return 1;
         }
 
-        public int getMainland(CommandContext<ServerCommandSource> context) {
+        public int getMainland(CommandContext<CommandSourceStack> context) {
             int color = colorResolver.getMainlandColor();
             sendFeedback(context, "command.biome-snapshot.config.mainland_ocean_biome_color_resolver.get.mainland", String.valueOf(color), BiomeSnapshotUtils.toHexString(color));
             return 1;
         }
 
-        public int getOcean(CommandContext<ServerCommandSource> context) {
+        public int getOcean(CommandContext<CommandSourceStack> context) {
             int color = colorResolver.getOceanColor();
             sendFeedback(context, "command.biome-snapshot.config.mainland_ocean_biome_color_resolver.get.ocean", String.valueOf(color), BiomeSnapshotUtils.toHexString(color));
             return 1;
@@ -105,7 +105,7 @@ public class BiomeSnapshotConfigCommand {
 
         private final MainlandRiverOceanBiomeColorResolver colorResolver = (MainlandRiverOceanBiomeColorResolver) ColorResolvers.MAINLAND_RIVER_OCEAN_BIOME_COLOR_RESOLVER;
 
-        public int setMainland(CommandContext<ServerCommandSource> context) {
+        public int setMainland(CommandContext<CommandSourceStack> context) {
             int color = IntegerArgumentType.getInteger(context, "color");
 
             colorResolver.setMainlandColor(color);
@@ -113,7 +113,7 @@ public class BiomeSnapshotConfigCommand {
             return 1;
         }
 
-        public int setRiver(CommandContext<ServerCommandSource> context) {
+        public int setRiver(CommandContext<CommandSourceStack> context) {
             int color = IntegerArgumentType.getInteger(context, "color");
 
             colorResolver.setRiverColor(color);
@@ -121,7 +121,7 @@ public class BiomeSnapshotConfigCommand {
             return 1;
         }
 
-        public int setOcean(CommandContext<ServerCommandSource> context) {
+        public int setOcean(CommandContext<CommandSourceStack> context) {
             int color = IntegerArgumentType.getInteger(context, "color");
 
             colorResolver.setOceanColor(color);
@@ -129,19 +129,19 @@ public class BiomeSnapshotConfigCommand {
             return 1;
         }
 
-        public int getMainland(CommandContext<ServerCommandSource> context) {
+        public int getMainland(CommandContext<CommandSourceStack> context) {
             int color = colorResolver.getMainlandColor();
             sendFeedback(context, "command.biome-snapshot.config.mainland_river_ocean_biome_color_resolver.get.mainland", String.valueOf(color), BiomeSnapshotUtils.toHexString(color));
             return 1;
         }
 
-        public int getRiver(CommandContext<ServerCommandSource> context) {
+        public int getRiver(CommandContext<CommandSourceStack> context) {
             int color = colorResolver.getRiverColor();
             sendFeedback(context, "command.biome-snapshot.config.mainland_river_ocean_biome_color_resolver.get.river", String.valueOf(color), BiomeSnapshotUtils.toHexString(color));
             return 1;
         }
 
-        public int getOcean(CommandContext<ServerCommandSource> context) {
+        public int getOcean(CommandContext<CommandSourceStack> context) {
             int color = colorResolver.getOceanColor();
             sendFeedback(context, "command.biome-snapshot.config.mainland_river_ocean_biome_color_resolver.get.ocean", String.valueOf(color), BiomeSnapshotUtils.toHexString(color));
             return 1;

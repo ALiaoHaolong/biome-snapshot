@@ -4,7 +4,7 @@ import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.suggestion.SuggestionProvider;
 import com.mojang.brigadier.suggestion.Suggestions;
 import com.mojang.brigadier.suggestion.SuggestionsBuilder;
-import net.minecraft.server.command.ServerCommandSource;
+import net.minecraft.commands.CommandSourceStack;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -13,7 +13,7 @@ import java.util.concurrent.CompletableFuture;
  *
  * <p>在合适的时候，向用户建议指定的值</p>
  */
-public class SingleIntegerSuggestionProvider implements SuggestionProvider<ServerCommandSource> {
+public class SingleIntegerSuggestionProvider implements SuggestionProvider<CommandSourceStack> {
 
     private final String suggestionValue;
 
@@ -26,7 +26,7 @@ public class SingleIntegerSuggestionProvider implements SuggestionProvider<Serve
     }
 
     @Override
-    public CompletableFuture<Suggestions> getSuggestions(CommandContext<ServerCommandSource> context, SuggestionsBuilder builder) {
+    public CompletableFuture<Suggestions> getSuggestions(CommandContext<CommandSourceStack> context, SuggestionsBuilder builder) {
         // 获取当前输入
         String input = builder.getRemaining();
         // 判断当前输入的是否是枚举值的前缀

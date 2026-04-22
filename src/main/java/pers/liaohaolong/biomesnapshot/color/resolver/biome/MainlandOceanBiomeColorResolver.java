@@ -1,10 +1,10 @@
 package pers.liaohaolong.biomesnapshot.color.resolver.biome;
 
-import net.minecraft.registry.entry.RegistryEntry;
-import net.minecraft.registry.tag.BiomeTags;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.biome.Biome;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.tags.BiomeTags;
+import net.minecraft.world.level.biome.Biome;
 
 /**
  * <h3>大陆海洋生物群系颜色解析器</h3>
@@ -22,12 +22,12 @@ public class MainlandOceanBiomeColorResolver extends AbstractBiomeColorResolver 
     private int oceanColor = DEFAULT_OCEAN_COLOR;
 
     @Override
-    protected int getBiomeColor(ServerWorld world, BlockPos pos) {
+    protected int getBiomeColor(MinecraftServer world, BlockPos pos) {
         // 获取生物群系
-        RegistryEntry<Biome> biomeRegistryEntry = world.getBiome(pos);
+        Holder<Biome> biomeRegistryEntry = world.findRespawnDimension().getBiome(pos);
         // 判断标签
-        if (biomeRegistryEntry.isIn(BiomeTags.IS_OVERWORLD)) {
-            if (biomeRegistryEntry.isIn(BiomeTags.IS_OCEAN))
+        if (biomeRegistryEntry.is(BiomeTags.IS_OVERWORLD)) {
+            if (biomeRegistryEntry.is(BiomeTags.IS_OCEAN))
                 return oceanColor;
             return mainlandColor;
         }

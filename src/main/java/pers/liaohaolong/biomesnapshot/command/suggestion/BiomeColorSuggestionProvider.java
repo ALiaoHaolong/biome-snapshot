@@ -5,8 +5,8 @@ import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.suggestion.SuggestionProvider;
 import com.mojang.brigadier.suggestion.Suggestions;
 import com.mojang.brigadier.suggestion.SuggestionsBuilder;
-import net.minecraft.server.command.ServerCommandSource;
-import net.minecraft.util.Identifier;
+import net.minecraft.commands.CommandSourceStack;
+import net.minecraft.resources.Identifier;
 import pers.liaohaolong.biomesnapshot.color.resolver.biome.BiomeColorResolver;
 
 import java.util.concurrent.CompletableFuture;
@@ -16,7 +16,7 @@ import java.util.concurrent.CompletableFuture;
  *
  * <p>在 Biome 颜色解析器中搜索指定生物群系的默认颜色，如果存在，向用户提供默认值的建议。</p>
  */
-public class BiomeColorSuggestionProvider implements SuggestionProvider<ServerCommandSource> {
+public class BiomeColorSuggestionProvider implements SuggestionProvider<CommandSourceStack> {
 
     private BiomeColorSuggestionProvider() {
     }
@@ -26,11 +26,11 @@ public class BiomeColorSuggestionProvider implements SuggestionProvider<ServerCo
     }
 
     @Override
-    public CompletableFuture<Suggestions> getSuggestions(CommandContext<ServerCommandSource> context, SuggestionsBuilder builder) {
+    public CompletableFuture<Suggestions> getSuggestions(CommandContext<CommandSourceStack> context, SuggestionsBuilder builder) {
         String namespace = StringArgumentType.getString(context, "namespace");
         String path = StringArgumentType.getString(context, "path");
         // 拼接要设置的生物群系标识符
-        Identifier identifier = Identifier.of(namespace, path);
+        Identifier identifier = Identifier.fromNamespaceAndPath(namespace, path);
         // 搜索默认值
         int defaultColor = BiomeColorResolver.DEFAULT_BIOME_COLOR_MAP.getOrDefault(identifier, -1);
         // 如果有默认值
